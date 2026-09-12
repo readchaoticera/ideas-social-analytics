@@ -264,28 +264,6 @@ h1 {
   min-width: 0;
 }
 
-.card.invert {
-  background: var(--blue);
-  border-color: var(--blue);
-  --ink: #f7f6f2;
-  --ink-secondary: rgba(247, 246, 242, 0.82);
-  --ink-muted: rgba(247, 246, 242, 0.7);
-  --grid: rgba(247, 246, 242, 0.24);
-  --surface: #3b5bf5;
-  color: #f7f6f2;
-}
-
-.card-eyebrow {
-  font-size: 12px;
-  font-weight: 700;
-  font-stretch: 90%;
-  letter-spacing: 0.05em;
-  color: var(--blue);
-  margin: 0 0 4px;
-}
-
-.card.invert .card-eyebrow { color: var(--yellow); }
-
 .card h3 {
   font-size: clamp(26px, 3.4vw, 38px);
   font-weight: 900;

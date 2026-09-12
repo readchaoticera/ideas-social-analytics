@@ -228,7 +228,6 @@
     });
 
     var lineColor = cfg.lineColor || INK;
-    var paper = cfg.invert ? "#3b5bf5" : PAPER;
 
     /* grid + y ticks */
     dom.ticks.forEach(function (t) {
@@ -283,8 +282,8 @@
         var flagged = cfg.flags && cfg.flags[p.i] && multi;
         svg.appendChild(el("circle", {
           cx: p.x, cy: p.y, r: multi ? 4 : 5,
-          fill: flagged ? paper : (multi ? s.color : lineColor),
-          stroke: flagged ? s.color : paper,
+          fill: flagged ? PAPER : (multi ? s.color : lineColor),
+          stroke: flagged ? s.color : PAPER,
           "stroke-width": 2
         }));
       });
@@ -307,8 +306,11 @@
         pts.forEach(function (p, k) {
           if (!keep[k]) return;
           var anchor = k === 0 ? "start" : k === pts.length - 1 ? "end" : "middle";
+          /* a steeply rising next segment runs through a centred label — shift it left */
+          var next = pts[k + 1];
+          if (anchor === "middle" && next && next.x - p.x < 100 && p.y - next.y > 42) anchor = "end";
           svg.appendChild(text(cfg.format === "pct" ? pct(p.v) : compact(p.v), {
-            x: p.x + (anchor === "start" ? 2 : anchor === "end" ? -2 : 0),
+            x: p.x + (anchor === "start" ? 2 : anchor === "end" ? -5 : 0),
             y: p.y - 16, "text-anchor": anchor,
             fill: "var(--ink)", "font-size": narrow ? 12 : 14,
             "font-weight": 800, "font-stretch": "90%"
@@ -349,7 +351,7 @@
     var cross = el("g", { opacity: 0 });
     var hair = el("line", {
       y1: pad.top - 6, y2: pad.top + plotH,
-      stroke: cfg.invert ? "rgba(247,246,242,.55)" : "rgba(25,25,25,.45)",
+      stroke: "rgba(25,25,25,.45)",
       "stroke-width": 1.5
     });
     cross.appendChild(hair);
@@ -544,7 +546,7 @@
 
   function card(parent, opts) {
     var section = document.createElement("section");
-    section.className = "card" + (opts.invert ? " invert" : "");
+    section.className = "card";
     var eyebrow = document.createElement("p");
     eyebrow.className = "card-eyebrow";
     eyebrow.textContent = "Crooked Ideas Weekly Social Analytics";
@@ -665,8 +667,6 @@
         categories: cats(ws),
         series: totalSeries(ws, "followers", "Followers", "#fce94d"),
         fill: "#fce94d",
-        lineColor: "#f7f6f2",
-        invert: true,
         labelAll: true,
         unit: "followers"
       }),
