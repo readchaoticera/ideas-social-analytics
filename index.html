@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crooked Ideas — Weekly Social Analytics</title>
+<meta name="description" content="Weekly social performance for Crooked Ideas: posts, impressions, engagements and followers across Instagram, TikTok and Threads.">
+<meta name="color-scheme" content="light">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%233b5bf5'/><text x='16' y='23' font-family='Helvetica,Arial' font-size='19' font-weight='bold' fill='%23fce94d' text-anchor='middle'>CI</text></svg>">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Crooked Ideas Weekly Social Analytics</p>
+    <h1>Ten weeks<br>of Crooked Ideas</h1>
+    <p class="dek">Every number the weekly leadership email reported for Crooked Ideas, from the week of 6/29 through the week of 8/31 — posts, impressions, engagements and followers, with Instagram and TikTok broken out.</p>
+    <p class="masthead-meta" id="range-stamp"></p>
+  </header>
+
+  <section aria-labelledby="latest-heading">
+    <div class="section-head">
+      <h2 id="latest-heading">Latest week · <span id="latest-week"></span></h2>
+      <p>Change is measured against the week before.</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <div class="controls" role="group" aria-label="Dashboard filters">
+    <div class="control-group">
+      <span class="control-label" id="range-label">Weeks</span>
+      <div class="seg" role="group" aria-labelledby="range-label">
+        <button type="button" data-range="10" aria-pressed="true">All 10</button>
+        <button type="button" data-range="6" aria-pressed="false">Last 6</button>
+        <button type="button" data-range="4" aria-pressed="false">Last 4</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label" id="scale-label">Platform scale</span>
+      <div class="seg" role="group" aria-labelledby="scale-label">
+        <button type="button" data-scale="linear" aria-pressed="true">Linear</button>
+        <button type="button" data-scale="log" aria-pressed="false">Log</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <button type="button" class="linkish" id="download-csv">Download CSV</button>
+    </div>
+  </div>
+
+  <section aria-labelledby="totals-heading">
+    <div class="section-head">
+      <h2 id="totals-heading">Account totals</h2>
+      <p>All Crooked Ideas accounts combined, as reported in the weekly email.</p>
+    </div>
+    <div class="grid" id="totals-grid"></div>
+  </section>
+
+  <section aria-labelledby="platform-heading">
+    <div class="section-head">
+      <h2 id="platform-heading">By platform</h2>
+      <p>Instagram and TikTok side by side. Hover, tap or arrow-key any chart for exact weekly values.</p>
+    </div>
+    <div class="grid" id="platform-grid"></div>
+  </section>
+
+  <section aria-labelledby="table-heading">
+    <div class="section-head">
+      <h2 id="table-heading">The numbers</h2>
+      <p>Everything plotted above, in full.</p>
+    </div>
+    <div id="table-host"></div>
+  </section>
+
+  <footer>
+    <h2>Notes &amp; method</h2>
+    <ul>
+      <li><strong>Source.</strong> The ten <em>Weekly Social Analytics</em> leadership emails covering 6/29/2026 – 9/6/2026. Only the Crooked Ideas section of each email is used; <code>scripts/parse_emails.py</code> reads the emails and writes <code>data/crooked-ideas.json</code>.</li>
+      <li><strong>Totals are as reported.</strong> The account-total charts plot each email's TOTALS row rather than a sum of its platform rows, which is how the numbers in the weekly deck were produced.</li>
+      <li><strong>Where the rows disagree.</strong> Platform rows and the TOTALS row are hand-assembled and rarely agree to the digit. Weeks where they differ by more than 5% on any metric are flagged in the tooltip and greyed in the table. The week of 7/13–7/19 is the notable one: that email repeats the previous week's Instagram and TikTok figures, so its platform split is unreliable even though its totals are not.</li>
+      <li><strong>Threads.</strong> Followers are reported; impressions and engagements are not, so Threads appears only in the follower charts.</li>
+      <li><strong>Engagement rate</strong> is the rate printed in the email, not a recomputed ratio.</li>
+      <li>Raw data: <a href="data/crooked-ideas.json">crooked-ideas.json</a>. Rebuild with <code>python3 scripts/parse_emails.py &lt;dir-of-emails&gt;</code>.</li>
+    </ul>
+    <p class="wordmark">Crooked Ideas</p>
+  </footer>
+
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/dashboard.js"></script>
+</body>
+</html>
