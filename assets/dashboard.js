@@ -634,18 +634,15 @@
 
     state.charts.push({
       chart: card(totalsHost, {
-        title: "Total engagements",
-        sub: "Likes, comments, shares and saves per week across all accounts",
+        title: "Total followers",
+        sub: "Combined follower count across Instagram, TikTok and Threads",
         categories: cats(ws),
-        series: totalSeries(ws, "engagements", "Engagements", "#ff8ac5"),
-        fill: "#ff8ac5",
-        zeroBased: true,
+        series: totalSeries(ws, "followers", "Followers", "#fce94d"),
+        fill: "#fce94d",
         labelAll: true,
-        unit: "engagements",
-        deltas: wowDeltas(ws, function (w) { return w.totals.engagements; })
+        unit: "followers"
       }),
-      data: function (w) { return totalSeries(w, "engagements", "Engagements", "#ff8ac5"); },
-      deltas: function (w) { return wowDeltas(w, function (x) { return x.totals.engagements; }); }
+      data: function (w) { return totalSeries(w, "followers", "Followers", "#fce94d"); }
     });
 
     state.charts.push({
@@ -666,15 +663,18 @@
 
     state.charts.push({
       chart: card(totalsHost, {
-        title: "Total followers",
-        sub: "Combined follower count across Instagram, TikTok and Threads",
+        title: "Total engagements",
+        sub: "Likes, comments, shares and saves per week across all accounts",
         categories: cats(ws),
-        series: totalSeries(ws, "followers", "Followers", "#fce94d"),
-        fill: "#fce94d",
+        series: totalSeries(ws, "engagements", "Engagements", "#ff8ac5"),
+        fill: "#ff8ac5",
+        zeroBased: true,
         labelAll: true,
-        unit: "followers"
+        unit: "engagements",
+        deltas: wowDeltas(ws, function (w) { return w.totals.engagements; })
       }),
-      data: function (w) { return totalSeries(w, "followers", "Followers", "#fce94d"); }
+      data: function (w) { return totalSeries(w, "engagements", "Engagements", "#ff8ac5"); },
+      deltas: function (w) { return wowDeltas(w, function (x) { return x.totals.engagements; }); }
     });
 
     state.charts.push({
