@@ -187,7 +187,7 @@
 
     var pad = {
       top: cfg.labelAll ? 34 : 26,
-      right: multi ? (narrow ? 16 : 52) : 18,
+      right: multi ? (narrow ? 16 : 52) : cfg.labelAll ? 40 : 18,
       bottom: 30,
       left: narrow ? 40 : 52
     };
@@ -306,9 +306,12 @@
         pts.forEach(function (p, k) {
           if (!keep[k]) return;
           var anchor = k === 0 ? "start" : k === pts.length - 1 ? "end" : "middle";
-          /* a steeply rising next segment runs through a centred label — shift it left */
+          /* Keep the label off its own line: shift it away from whichever
+             neighbouring segment is steep enough to run through it. */
           var next = pts[k + 1];
+          var prev = pts[k - 1];
           if (anchor === "middle" && next && next.x - p.x < 100 && p.y - next.y > 42) anchor = "end";
+          if (k === pts.length - 1 && prev && p.y - prev.y > 42) anchor = "start";
           svg.appendChild(text(cfg.format === "pct" ? pct(p.v) : compact(p.v), {
             x: p.x + (anchor === "start" ? 2 : anchor === "end" ? -5 : 0),
             y: p.y - 16, "text-anchor": anchor,
@@ -489,9 +492,10 @@
 
   /* ---------------- dashboard ---------------- */
 
-  var state = { range: WEEKS.length, scale: "linear", charts: [] };
+  var state = { range: "all", scale: "linear", charts: [] };
 
   function slice() {
+    if (state.range === "all") return WEEKS.slice();
     return WEEKS.slice(Math.max(0, WEEKS.length - state.range));
   }
 
@@ -837,7 +841,7 @@
   function wireControls() {
     document.querySelectorAll("[data-range]").forEach(function (b) {
       b.addEventListener("click", function () {
-        state.range = Number(b.dataset.range);
+        state.range = b.dataset.range === "all" ? "all" : Number(b.dataset.range);
         document.querySelectorAll("[data-range]").forEach(function (x) {
           x.setAttribute("aria-pressed", x === b ? "true" : "false");
         });
@@ -872,10 +876,16 @@
       var p = iso.split("-");
       return Number(p[1]) + "/" + Number(p[2]);
     };
+    var year = last.week_end.slice(0, 4);
     document.getElementById("range-stamp").textContent =
       "Weeks ending " + md(first.week_end) + " – " + md(last.week_end) +
-      "/2026 · Instagram + Threads + TikTok totals · " + WEEKS.length + " weekly reports";
+      "/" + year + " · Instagram + Threads + TikTok totals · " + WEEKS.length + " weekly reports";
     document.getElementById("latest-week").textContent = weekLabel(last);
+    document.getElementById("dek-range").textContent =
+      "from the week of " + md(first.week_start) + " through the week of " + md(last.week_start);
+    document.getElementById("source-range").textContent =
+      md(first.week_start) + "/" + first.week_start.slice(0, 4) + " – " + md(last.week_end) + "/" + year;
+    document.getElementById("range-all").textContent = "All " + WEEKS.length;
   }
 
   buildTiles();
