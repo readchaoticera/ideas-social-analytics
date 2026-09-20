@@ -581,7 +581,7 @@ window.CI_DATA = {
       "week_start": "2026-09-14",
       "week_end": "2026-09-20",
       "label": "9/14-9/20",
-      "posts": null,
+      "posts": 30,
       "platforms": {
         "Instagram": {
           "followers": 17120,
