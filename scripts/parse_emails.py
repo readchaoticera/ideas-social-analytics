@@ -127,6 +127,11 @@ def placeholder_weeks(dest):
                 row.setdefault(metric, None)
         # Derive whatever totals the supplied platform rows support; a metric no
         # platform reports stays None rather than becoming a misleading zero.
+        # No email printed an engagement rate for these weeks, so compute it
+        # wherever both sides of the ratio were supplied.
+        for row in platforms.values():
+            if row["engagement_rate"] is None and row["impressions"] and row["engagements"]:
+                row["engagement_rate"] = round(row["engagements"] / row["impressions"] * 100, 1)
         totals = dict(week.get("totals") or {})
         for metric in ("followers", "impressions", "engagements"):
             if totals.get(metric) is None:

@@ -10,7 +10,7 @@
         "Instagram": {
           "followers": 17120,
           "impressions": 1333000,
-          "engagements": null,
+          "engagements": 50600,
           "engagement_rate": null
         },
         "Threads": {
@@ -22,7 +22,7 @@
         "TikTok": {
           "followers": 10600,
           "impressions": 66500,
-          "engagements": null,
+          "engagements": 9000,
           "engagement_rate": null
         }
       }

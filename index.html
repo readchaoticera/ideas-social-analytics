@@ -80,7 +80,7 @@
       <li><strong>Where the rows disagree.</strong> Platform rows and the TOTALS row are hand-assembled and rarely agree to the digit. Weeks where they differ by more than 5% on any metric are flagged in the tooltip and greyed in the table. The week of 7/13–7/19 is the notable one: that email repeats the previous week's Instagram and TikTok figures, so its platform split is unreliable even though its totals are not.</li>
       <li><strong>Placeholder weeks.</strong> A week with no email yet can be hand-entered in <code>data/placeholder-weeks.json</code>. It is drawn with a dashed line and hollow markers, labelled in the table, and marked <code>placeholder</code> in the CSV; any metric not supplied stays blank rather than being guessed at. When the real email arrives it replaces the placeholder automatically.</li>
       <li><strong>Threads.</strong> Followers are reported; impressions and engagements are not, so Threads appears only in the follower charts.</li>
-      <li><strong>Engagement rate</strong> is the rate printed in the email, not a recomputed ratio.</li>
+      <li><strong>Engagement rate</strong> is the rate printed in the email, not a recomputed ratio — except on placeholder weeks, where no email printed one and it is computed as engagements ÷ impressions.</li>
       <li>Raw data: <a href="data/crooked-ideas.json">crooked-ideas.json</a>. Rebuild with <code>python3 scripts/parse_emails.py &lt;dir-of-emails&gt;</code>.</li>
     </ul>
     <p class="wordmark">Crooked Ideas</p>

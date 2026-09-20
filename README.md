@@ -76,6 +76,8 @@ wins automatically — the entry can be deleted at your leisure.
   totals are fine.
 - **Threads** reports followers only, so it appears just in the follower charts.
 - **Engagement rate** is the rate printed in the email, not a recomputed ratio.
+  Placeholder weeks are the exception: no email printed one, so it is computed as
+  engagements ÷ impressions wherever both were supplied.
 
 ## Brand
 

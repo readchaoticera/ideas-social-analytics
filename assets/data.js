@@ -586,8 +586,8 @@ window.CI_DATA = {
         "Instagram": {
           "followers": 17120,
           "impressions": 1333000,
-          "engagements": null,
-          "engagement_rate": null
+          "engagements": 50600,
+          "engagement_rate": 3.8
         },
         "Threads": {
           "followers": 2344,
@@ -598,15 +598,16 @@ window.CI_DATA = {
         "TikTok": {
           "followers": 10600,
           "impressions": 66500,
-          "engagements": null,
-          "engagement_rate": null
+          "engagements": 9000,
+          "engagement_rate": 13.5
         }
       },
       "placeholder": true,
       "totals": {
         "followers": 30064,
         "impressions": 1399500,
-        "engagements": null
+        "engagements": 59600,
+        "engagement_rate": 4.3
       },
       "checks": {
         "followers": {
@@ -617,6 +618,11 @@ window.CI_DATA = {
         "impressions": {
           "platform_sum": 1399500,
           "reported": 1399500,
+          "diff_pct": 0.0
+        },
+        "engagements": {
+          "platform_sum": 59600,
+          "reported": 59600,
           "diff_pct": 0.0
         }
       },

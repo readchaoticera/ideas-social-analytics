@@ -250,6 +250,7 @@
     }));
 
     /* series marks */
+    var endLabels = [];
     series.forEach(function (s) {
       var pts = [];
       s.values.forEach(function (v, i) {
@@ -350,11 +351,21 @@
         });
       } else if (multi && !narrow) {
         var last = pts[pts.length - 1];
-        svg.appendChild(text(cfg.format === "pct" ? pct(last.v) : compact(last.v), {
-          x: last.x + 9, y: last.y + 4, "text-anchor": "start",
-          fill: "var(--ink)", "font-size": 12.5, "font-weight": 800, "font-stretch": "90%"
-        }));
+        endLabels.push({ x: last.x, y: last.y, v: last.v });
       }
+    });
+
+    /* End-of-line labels, placed only where they don't collide: converging
+       series keep their identity from the legend and the crosshair readout. */
+    var placed = [];
+    endLabels.sort(function (a, b) { return a.y - b.y; }).forEach(function (lab) {
+      var clash = placed.some(function (y) { return Math.abs(y - lab.y) < 15; });
+      if (clash) return;
+      placed.push(lab.y);
+      svg.appendChild(text(cfg.format === "pct" ? pct(lab.v) : compact(lab.v), {
+        x: lab.x + 9, y: lab.y + 4, "text-anchor": "start",
+        fill: "var(--ink)", "font-size": 12.5, "font-weight": 800, "font-stretch": "90%"
+      }));
     });
 
     /* x labels */
