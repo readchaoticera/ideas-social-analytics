@@ -14,6 +14,7 @@ assets/dashboard.js      hand-rolled SVG charts, tooltips, filters, table, CSV e
 assets/data.js           generated — the dataset as window.CI_DATA
 assets/fonts/            Archivo (variable, latin subset), SIL OFL 1.1
 data/crooked-ideas.json  generated — the canonical dataset
+data/placeholder-weeks.json  hand-entered weeks with no email yet (see below)
 scripts/parse_emails.py  reads the weekly .eml files and writes both generated files
 ```
 
@@ -45,6 +46,22 @@ python3 scripts/parse_emails.py ~/path/to/weekly-emails data/crooked-ideas.json
 That rewrites `data/crooked-ideas.json` and `assets/data.js` from whatever `.eml`
 files it finds (any Python 3, no dependencies). Commit both, and the dashboard
 picks the new week up — charts, tiles, table and CSV all read the same file.
+
+## Placeholder weeks
+
+A week with no email yet can be hand-entered in `data/placeholder-weeks.json`:
+
+```json
+{ "week_start": "2026-09-14", "week_end": "2026-09-20", "label": "9/14-9/20",
+  "platforms": { "Instagram": { "followers": 17120, "impressions": 1333000 } } }
+```
+
+The parser merges it in, marks it `placeholder: true`, and derives the totals it
+can from the platform rows. Anything not supplied stays `null` and renders as a
+gap, never as a zero. On the page these weeks are drawn with a dashed line,
+hollow markers and a washed-back fill, labelled in the table and the tooltip, and
+marked `placeholder` in the CSV. When the real email arrives, the parsed week
+wins automatically — the entry can be deleted at your leisure.
 
 ## How the numbers are derived
 

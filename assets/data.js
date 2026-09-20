@@ -3,6 +3,7 @@ window.CI_DATA = {
   "brand": "Crooked Ideas",
   "source": "Crooked Media Weekly Social Analytics emails",
   "generated_from": 11,
+  "placeholder_weeks": 1,
   "weeks": [
     {
       "week_start": "2026-06-29",
@@ -53,7 +54,8 @@ window.CI_DATA = {
           "diff_pct": -0.2
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-07-06",
@@ -104,7 +106,8 @@ window.CI_DATA = {
           "diff_pct": -0.2
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-07-13",
@@ -155,7 +158,8 @@ window.CI_DATA = {
           "diff_pct": -57.9
         }
       },
-      "platform_rows_suspect": true
+      "platform_rows_suspect": true,
+      "placeholder": false
     },
     {
       "week_start": "2026-07-20",
@@ -206,7 +210,8 @@ window.CI_DATA = {
           "diff_pct": -8.8
         }
       },
-      "platform_rows_suspect": true
+      "platform_rows_suspect": true,
+      "placeholder": false
     },
     {
       "week_start": "2026-07-27",
@@ -257,7 +262,8 @@ window.CI_DATA = {
           "diff_pct": -0.0
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-08-03",
@@ -308,7 +314,8 @@ window.CI_DATA = {
           "diff_pct": -0.2
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-08-10",
@@ -359,7 +366,8 @@ window.CI_DATA = {
           "diff_pct": -0.3
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-08-17",
@@ -410,7 +418,8 @@ window.CI_DATA = {
           "diff_pct": -0.0
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-08-24",
@@ -461,7 +470,8 @@ window.CI_DATA = {
           "diff_pct": -0.0
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-08-31",
@@ -512,7 +522,8 @@ window.CI_DATA = {
           "diff_pct": -0.1
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     },
     {
       "week_start": "2026-09-07",
@@ -561,6 +572,52 @@ window.CI_DATA = {
           "platform_sum": 69153,
           "reported": 69191,
           "diff_pct": -0.1
+        }
+      },
+      "platform_rows_suspect": false,
+      "placeholder": false
+    },
+    {
+      "week_start": "2026-09-14",
+      "week_end": "2026-09-20",
+      "label": "9/14-9/20",
+      "posts": null,
+      "platforms": {
+        "Instagram": {
+          "followers": 17120,
+          "impressions": 1333000,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "Threads": {
+          "followers": 2344,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 10600,
+          "impressions": 66500,
+          "engagements": null,
+          "engagement_rate": null
+        }
+      },
+      "placeholder": true,
+      "totals": {
+        "followers": 30064,
+        "impressions": 1399500,
+        "engagements": null
+      },
+      "checks": {
+        "followers": {
+          "platform_sum": 30064,
+          "reported": 30064,
+          "diff_pct": 0.0
+        },
+        "impressions": {
+          "platform_sum": 1399500,
+          "reported": 1399500,
+          "diff_pct": 0.0
         }
       },
       "platform_rows_suspect": false

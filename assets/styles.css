@@ -437,6 +437,23 @@ tbody tr:hover td, tbody tr:hover th { background: rgba(59, 91, 245, 0.06); }
 
 .flagged { color: var(--ink-muted); }
 
+tr.provisional th[scope="row"], tr.provisional td { color: var(--ink-secondary); font-style: italic; }
+
+.badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 7px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  vertical-align: middle;
+}
+
 /* ---------- Footer ---------- */
 
 footer {

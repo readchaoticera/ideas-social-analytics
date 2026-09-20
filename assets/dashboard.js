@@ -259,31 +259,60 @@
       });
       if (!pts.length) return;
 
-      var d = pts.map(function (p, k) { return (k ? "L" : "M") + p.x + " " + p.y; }).join(" ");
+      var path = function (list) {
+        return list.map(function (p, k) { return (k ? "L" : "M") + p.x + " " + p.y; }).join(" ");
+      };
+
+      /* Weeks with no email yet are provisional: draw that trailing run dashed,
+         over a washed-back fill, so it never reads as reported data. */
+      var prov = cfg.provisional || [];
+      var cut = -1;
+      for (var c = 0; c < pts.length; c++) {
+        if (prov[pts[c].i]) { cut = c; break; }
+      }
+      if (cut > -1) {
+        for (var c2 = cut; c2 < pts.length; c2++) {
+          if (!prov[pts[c2].i]) { cut = -1; break; } // only a trailing run is special-cased
+        }
+      }
+      var firm = cut > -1 ? pts.slice(0, cut) : pts;
+      var draft = cut > -1 ? pts.slice(Math.max(0, cut - 1)) : [];
 
       if (cfg.fill && !multi) {
         var base = pad.top + plotH;
+        var area = function (list, opacity) {
+          if (list.length < 2) return;
+          svg.appendChild(el("path", {
+            d: path(list) + " L" + list[list.length - 1].x + " " + base + " L" + list[0].x + " " + base + " Z",
+            fill: cfg.fill, "fill-opacity": opacity, stroke: "none"
+          }));
+        };
+        area(firm, 1);
+        area(draft, 0.4);
+      }
+
+      var stroke = multi ? s.color : lineColor;
+      var strokeWidth = multi ? 2.5 : 3.5;
+      if (firm.length > 1) {
         svg.appendChild(el("path", {
-          d: d + " L" + pts[pts.length - 1].x + " " + base + " L" + pts[0].x + " " + base + " Z",
-          fill: cfg.fill, stroke: "none"
+          d: path(firm), fill: "none", stroke: stroke, "stroke-width": strokeWidth,
+          "stroke-linejoin": "round", "stroke-linecap": "round"
+        }));
+      }
+      if (draft.length > 1) {
+        svg.appendChild(el("path", {
+          d: path(draft), fill: "none", stroke: stroke, "stroke-width": strokeWidth,
+          "stroke-linejoin": "round", "stroke-linecap": "round",
+          "stroke-dasharray": multi ? "6 5" : "8 6"
         }));
       }
 
-      svg.appendChild(el("path", {
-        d: d,
-        fill: "none",
-        stroke: multi ? s.color : lineColor,
-        "stroke-width": multi ? 2.5 : 3.5,
-        "stroke-linejoin": "round",
-        "stroke-linecap": "round"
-      }));
-
       pts.forEach(function (p) {
-        var flagged = cfg.flags && cfg.flags[p.i] && multi;
+        var hollow = prov[p.i] || (cfg.flags && cfg.flags[p.i] && multi);
         svg.appendChild(el("circle", {
           cx: p.x, cy: p.y, r: multi ? 4 : 5,
-          fill: flagged ? PAPER : (multi ? s.color : lineColor),
-          stroke: flagged ? s.color : PAPER,
+          fill: hollow ? PAPER : (multi ? s.color : lineColor),
+          stroke: hollow ? stroke : PAPER,
           "stroke-width": 2
         }));
       });
@@ -475,6 +504,13 @@
       tip.appendChild(d);
     }
 
+    if (cfg.provisional && cfg.provisional[i]) {
+      var prov = document.createElement("div");
+      prov.className = "tip-note";
+      prov.textContent = "Placeholder — no weekly email for this week yet.";
+      tip.appendChild(prov);
+    }
+
     if (cfg.flags && cfg.flags[i] && cfg.series.length > 1) {
       var note = document.createElement("div");
       note.className = "tip-note";
@@ -511,6 +547,10 @@
 
   function flagsFor(ws, metric) {
     return ws.map(function (w) { return flagged(w, metric); });
+  }
+
+  function provisionalFor(ws) {
+    return ws.map(function (w) { return !!w.placeholder; });
   }
 
   function totalSeries(ws, metric, label, color) {
@@ -573,16 +613,21 @@
     return chart;
   }
 
+  function change(a, b) {
+    if (a === null || a === undefined || b === null || b === undefined) return null;
+    return a - b;
+  }
+
   function buildTiles() {
     var host = document.getElementById("tiles");
     var last = WEEKS[WEEKS.length - 1];
     var prev = WEEKS[WEEKS.length - 2];
     var tiles = [
-      { label: "Posts", value: exact(last.posts), delta: last.posts - prev.posts, kind: "abs" },
+      { label: "Posts", value: exact(last.posts), delta: change(last.posts, prev.posts), kind: "abs" },
       { label: "Impressions", value: compact(last.totals.impressions), delta: signedPct(last.totals.impressions, prev.totals.impressions), kind: "pct" },
       { label: "Engagements", value: compact(last.totals.engagements), delta: signedPct(last.totals.engagements, prev.totals.engagements), kind: "pct" },
-      { label: "Followers", value: exact(last.totals.followers), delta: last.totals.followers - prev.totals.followers, kind: "abs" },
-      { label: "Engagement rate", value: pct(last.totals.engagement_rate), delta: last.totals.engagement_rate - prev.totals.engagement_rate, kind: "pp" }
+      { label: "Followers", value: exact(last.totals.followers), delta: change(last.totals.followers, prev.totals.followers), kind: "abs" },
+      { label: "Engagement rate", value: pct(last.totals.engagement_rate), delta: change(last.totals.engagement_rate, prev.totals.engagement_rate), kind: "pp" }
     ];
     tiles.forEach(function (t) {
       var d = document.createElement("div");
@@ -595,6 +640,17 @@
       v.textContent = t.value;
       var delta = document.createElement("p");
       delta.className = "tile-delta";
+      if (t.delta === null) {
+        var none = document.createElement("span");
+        none.className = "flat";
+        none.textContent = "not reported yet";
+        delta.appendChild(none);
+        d.appendChild(l);
+        d.appendChild(v);
+        d.appendChild(delta);
+        host.appendChild(d);
+        return;
+      }
       var span = document.createElement("span");
       var dir = t.delta > 0 ? "up" : t.delta < 0 ? "down" : "flat";
       span.className = dir;
@@ -623,6 +679,7 @@
         title: "Total posts",
         sub: "Posts published per week across all Crooked Ideas accounts",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: postsSeries(ws),
         fill: "#1e6a45",
         zeroBased: true,
@@ -637,6 +694,7 @@
         title: "Total followers",
         sub: "Combined follower count across Instagram, TikTok and Threads",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: totalSeries(ws, "followers", "Followers", "#fce94d"),
         fill: "#fce94d",
         labelAll: true,
@@ -650,6 +708,7 @@
         title: "Total impressions",
         sub: "Impressions per week across all Crooked Ideas accounts",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: totalSeries(ws, "impressions", "Impressions", "#3b5bf5"),
         fill: "#3b5bf5",
         zeroBased: true,
@@ -666,6 +725,7 @@
         title: "Total engagements",
         sub: "Likes, comments, shares and saves per week across all accounts",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: totalSeries(ws, "engagements", "Engagements", "#ff8ac5"),
         fill: "#ff8ac5",
         zeroBased: true,
@@ -682,6 +742,7 @@
         title: "Followers by platform",
         sub: "Weekly follower count, Instagram vs TikTok vs Threads",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: platformSeries(ws, "followers"),
         flags: flagsFor(ws, "followers"),
         unit: "followers"
@@ -696,6 +757,7 @@
         title: "Impressions by platform",
         sub: "Weekly impressions, Instagram vs TikTok. Threads impressions are not reported.",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: platformSeries(ws, "impressions", ["Instagram", "TikTok"]),
         flags: flagsFor(ws, "impressions"),
         zeroBased: true,
@@ -711,6 +773,7 @@
         title: "Engagements by platform",
         sub: "Weekly engagements, Instagram vs TikTok. Threads engagements are not reported.",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: platformSeries(ws, "engagements", ["Instagram", "TikTok"]),
         flags: flagsFor(ws, "engagements"),
         zeroBased: true,
@@ -726,6 +789,7 @@
         title: "Engagement rate",
         sub: "Engagements as a share of impressions, by platform and overall",
         categories: cats(ws),
+        provisional: provisionalFor(ws),
         series: platformSeries(ws, "engagement_rate", ["Instagram", "TikTok"]).concat([{
           key: "total",
           label: "All accounts",
@@ -754,6 +818,7 @@
       var c = entry.chart;
       if (entry.deltas) c.cfg.deltas = entry.deltas(ws);
       if (entry.platform) c.cfg.scale = state.scale;
+      c.cfg.provisional = provisionalFor(ws);
       c.setData(cats(ws), entry.data(ws), entry.metric ? flagsFor(ws, entry.metric) : []);
     });
     buildTable();
@@ -784,7 +849,7 @@
 
     var table = document.createElement("table");
     var caption = document.createElement("caption");
-    caption.textContent = "Every value on this page, as reported in the weekly emails. Greyed cells are weeks where the platform rows don't reconcile with the reported total.";
+    caption.textContent = "Every value on this page, as reported in the weekly emails. Greyed cells are weeks where the platform rows don't reconcile with the reported total; rows marked placeholder have no email yet.";
     table.appendChild(caption);
 
     var thead = document.createElement("thead");
@@ -801,6 +866,7 @@
     var tbody = document.createElement("tbody");
     ws.forEach(function (w) {
       var tr = document.createElement("tr");
+      if (w.placeholder) tr.className = "provisional";
       COLUMNS.forEach(function (c) {
         var cell = document.createElement(c.row ? "th" : "td");
         if (c.row) cell.scope = "row";
@@ -809,6 +875,12 @@
           cell.title = "Platform rows for this week don't reconcile with the reported total";
         }
         cell.textContent = c.get(w);
+        if (c.row && w.placeholder) {
+          var tag = document.createElement("span");
+          tag.className = "badge";
+          tag.textContent = "placeholder";
+          cell.appendChild(tag);
+        }
         tr.appendChild(cell);
       });
       tbody.appendChild(tr);
@@ -825,13 +897,14 @@
     var rows = [["week_start", "week_end", "week", "posts", "total_impressions", "total_engagements",
       "total_followers", "total_engagement_rate", "instagram_followers", "instagram_impressions",
       "instagram_engagements", "instagram_engagement_rate", "tiktok_followers", "tiktok_impressions",
-      "tiktok_engagements", "tiktok_engagement_rate", "threads_followers", "platform_rows_reconcile"]];
+      "tiktok_engagements", "tiktok_engagement_rate", "threads_followers", "platform_rows_reconcile", "source"]];
     WEEKS.forEach(function (w) {
       var ig = w.platforms.Instagram, tt = w.platforms.TikTok, th = w.platforms.Threads;
       rows.push([w.week_start, w.week_end, w.label, w.posts, w.totals.impressions, w.totals.engagements,
         w.totals.followers, w.totals.engagement_rate, ig.followers, ig.impressions, ig.engagements,
         ig.engagement_rate, tt.followers, tt.impressions, tt.engagements, tt.engagement_rate,
-        th.followers, w.platform_rows_suspect ? "no" : "yes"]);
+        th.followers, w.platform_rows_suspect ? "no" : "yes",
+        w.placeholder ? "placeholder" : "weekly email"]);
     });
     return rows.map(function (r) {
       return r.map(function (c) { return c === null || c === undefined ? "" : c; }).join(",");
@@ -886,6 +959,13 @@
     document.getElementById("source-range").textContent =
       md(first.week_start) + "/" + first.week_start.slice(0, 4) + " – " + md(last.week_end) + "/" + year;
     document.getElementById("range-all").textContent = "All " + WEEKS.length;
+
+    if (last.placeholder) {
+      var badge = document.getElementById("latest-badge");
+      badge.hidden = false;
+      document.getElementById("latest-note").textContent =
+        "These are placeholder figures — no weekly email for this week yet. Metrics that weren't supplied show as \u2014.";
+    }
   }
 
   buildTiles();
