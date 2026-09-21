@@ -74,7 +74,11 @@ wins automatically — the entry can be deleted at your leisure.
 - **The week of 7/13–7/19 is the one real problem.** That email repeats the previous
   week's Instagram and TikTok rows, so its platform split is unreliable — its
   totals are fine.
-- **Threads** reports followers only, so it appears just in the follower charts.
+- **Threads and YouTube** report followers only, so they appear just in the follower
+  charts. YouTube's first row is the 9/14-9/20 email.
+- **Week-over-week changes are computed** from the plotted totals rather than copied
+  from the WoW figures printed in the email, which sometimes disagree with the
+  email's own totals.
 - **Engagement rate** is the rate printed in the email, not a recomputed ratio.
   Placeholder weeks are the exception: no email printed one, so it is computed as
   engagements ÷ impressions wherever both were supplied.
@@ -90,8 +94,8 @@ Colours and type are set once at the top of `assets/styles.css`:
 | `--pink` | `#ff8ac5` | engagements |
 | `--green` | `#1e6a45` | posts |
 | `--yellow` | `#fce94d` | followers |
-| `--series-instagram` / `--series-tiktok` / `--series-threads` | `#3b5bf5` / `#e0489b` / `#2f8f5b` | platform lines |
+| `--series-instagram` / `--series-tiktok` / `--series-threads` / `--series-youtube` | `#3b5bf5` / `#e0489b` / `#2f8f5b` / `#7a5cd6` | platform lines |
 
-The three platform steps are deliberately not the flat brand colours: they're
+The four platform steps are deliberately not the flat brand colours: they're
 adjusted so the lines stay distinguishable under colour-vision deficiency and hold
 3:1 contrast against the surface. Change them and check that still holds.

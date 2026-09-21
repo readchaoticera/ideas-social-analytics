@@ -12,7 +12,8 @@
   var PLATFORMS = [
     { key: "Instagram", label: "Instagram", color: "#3b5bf5" },
     { key: "TikTok", label: "TikTok", color: "#e0489b" },
-    { key: "Threads", label: "Threads", color: "#2f8f5b" }
+    { key: "Threads", label: "Threads", color: "#2f8f5b" },
+    { key: "YouTube", label: "YouTube", color: "#7a5cd6" }
   ];
 
   var INK = "#191919";
@@ -341,7 +342,7 @@
           var next = pts[k + 1];
           var prev = pts[k - 1];
           if (anchor === "middle" && next && next.x - p.x < 100 && p.y - next.y > 42) anchor = "end";
-          if (k === pts.length - 1 && prev && p.y - prev.y > 42) anchor = "start";
+          if (prev && p.x - prev.x < 100 && p.y - prev.y > 42 && anchor !== "end") anchor = "start";
           svg.appendChild(text(cfg.format === "pct" ? pct(p.v) : compact(p.v), {
             x: p.x + (anchor === "start" ? 2 : anchor === "end" ? -5 : 0),
             y: p.y - 16, "text-anchor": anchor,
@@ -574,7 +575,13 @@
   }
 
   function platformSeries(ws, metric, only) {
-    return PLATFORMS.filter(function (p) { return !only || only.indexOf(p.key) > -1; }).map(function (p) {
+    return PLATFORMS.filter(function (p) {
+      if (only && only.indexOf(p.key) < 0) return false;
+      return ws.some(function (w) {
+        var row = w.platforms[p.key];
+        return row && row[metric] !== null && row[metric] !== undefined;
+      });
+    }).map(function (p) {
       return {
         key: p.key,
         label: p.label,
@@ -703,7 +710,7 @@
     state.charts.push({
       chart: card(totalsHost, {
         title: "Total followers",
-        sub: "Combined follower count across Instagram, TikTok and Threads",
+        sub: "Combined follower count across every Crooked Ideas account",
         categories: cats(ws),
         provisional: provisionalFor(ws),
         series: totalSeries(ws, "followers", "Followers", "#fce94d"),
@@ -751,7 +758,7 @@
     state.charts.push({
       chart: card(platHost, {
         title: "Followers by platform",
-        sub: "Weekly follower count, Instagram vs TikTok vs Threads",
+        sub: "Weekly follower count, one line per account",
         categories: cats(ws),
         provisional: provisionalFor(ws),
         series: platformSeries(ws, "followers"),
@@ -850,7 +857,8 @@
     { head: "TikTok followers", get: function (w) { return exact(w.platforms.TikTok.followers); }, flag: "followers" },
     { head: "TikTok impressions", get: function (w) { return exact(w.platforms.TikTok.impressions); }, flag: "impressions" },
     { head: "TikTok engagements", get: function (w) { return exact(w.platforms.TikTok.engagements); }, flag: "engagements" },
-    { head: "Threads followers", get: function (w) { return exact(w.platforms.Threads.followers); } }
+    { head: "Threads followers", get: function (w) { return exact(w.platforms.Threads.followers); } },
+    { head: "YouTube followers", get: function (w) { return exact(w.platforms.YouTube.followers); } }
   ];
 
   function buildTable() {
@@ -910,11 +918,12 @@
       "instagram_engagements", "instagram_engagement_rate", "tiktok_followers", "tiktok_impressions",
       "tiktok_engagements", "tiktok_engagement_rate", "threads_followers", "platform_rows_reconcile", "source"]];
     WEEKS.forEach(function (w) {
-      var ig = w.platforms.Instagram, tt = w.platforms.TikTok, th = w.platforms.Threads;
+      var ig = w.platforms.Instagram, tt = w.platforms.TikTok, th = w.platforms.Threads,
+          yt = w.platforms.YouTube;
       rows.push([w.week_start, w.week_end, w.label, w.posts, w.totals.impressions, w.totals.engagements,
         w.totals.followers, w.totals.engagement_rate, ig.followers, ig.impressions, ig.engagements,
         ig.engagement_rate, tt.followers, tt.impressions, tt.engagements, tt.engagement_rate,
-        th.followers, w.platform_rows_suspect ? "no" : "yes",
+        th.followers, yt.followers, w.platform_rows_suspect ? "no" : "yes",
         w.placeholder ? "placeholder" : "weekly email"]);
     });
     return rows.map(function (r) {
@@ -971,9 +980,8 @@
       md(first.week_start) + "/" + first.week_start.slice(0, 4) + " – " + md(last.week_end) + "/" + year;
     document.getElementById("range-all").textContent = "All " + WEEKS.length;
 
+    document.getElementById("latest-badge").hidden = !last.placeholder;
     if (last.placeholder) {
-      var badge = document.getElementById("latest-badge");
-      badge.hidden = false;
       document.getElementById("latest-note").textContent =
         "These are placeholder figures — no weekly email for this week yet. Metrics that weren't supplied show as \u2014.";
     }

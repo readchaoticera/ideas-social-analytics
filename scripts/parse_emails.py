@@ -19,7 +19,10 @@ import re
 import sys
 from email import policy
 
-PLATFORMS = ["Instagram", "Threads", "TikTok", "Twitter", "Facebook", "Bluesky", "TOTALS"]
+# Every platform label that can head a row, so a new one (YouTube arrived in the
+# 9/14-9/20 email) starts its own row instead of spilling into the one above.
+PLATFORMS = ["Instagram", "Threads", "TikTok", "YouTube", "Twitter", "Facebook", "Bluesky", "TOTALS"]
+TRACKED = ["Instagram", "Threads", "TikTok", "YouTube"]
 METRICS = ["followers", "impressions", "engagements", "engagement_rate"]
 
 
@@ -121,7 +124,7 @@ def placeholder_weeks(dest):
         week["placeholder"] = True
         week.setdefault("posts", None)
         platforms = week.setdefault("platforms", {})
-        for name in ("Instagram", "Threads", "TikTok"):
+        for name in TRACKED:
             row = platforms.setdefault(name, {})
             for metric in METRICS:
                 row.setdefault(metric, None)
@@ -160,7 +163,11 @@ def main(src, dest):
                 "label": label,
                 "posts": int(posts.group(1).replace(",", "")) if posts else None,
                 "totals": table.get("TOTALS", {}),
-                "platforms": {p: table[p] for p in ("Instagram", "Threads", "TikTok") if p in table},
+                # Always emit every tracked platform, so a week predating an
+                # account still has the key, with nulls rather than a gap.
+                "platforms": {
+                    p: table.get(p, dict.fromkeys(METRICS)) for p in TRACKED
+                },
                 "source_email": os.path.basename(path),
             }
         )

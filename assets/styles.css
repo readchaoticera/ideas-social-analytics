@@ -35,6 +35,7 @@
   --series-instagram: #3b5bf5;
   --series-tiktok: #e0489b;
   --series-threads: #2f8f5b;
+  --series-youtube: #7a5cd6;
 
   --pos: #1e6a45;
   --neg: #b3312f;
@@ -45,6 +46,9 @@
 }
 
 * { box-sizing: border-box; }
+
+/* .badge sets display, which would otherwise beat the hidden attribute */
+[hidden] { display: none !important; }
 
 body {
   margin: 0;

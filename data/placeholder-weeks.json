@@ -1,31 +1,4 @@
 {
   "_comment": "Hand-entered weeks that have no Weekly Social Analytics email yet. scripts/parse_emails.py merges these in, marks them placeholder: true, and derives any totals it can from the platform rows. A real email for the same week always wins, so these can be left in place until the email lands. Metrics that were not supplied stay null and render as gaps, never as zero.",
-  "weeks": [
-    {
-      "week_start": "2026-09-14",
-      "week_end": "2026-09-20",
-      "label": "9/14-9/20",
-      "posts": 30,
-      "platforms": {
-        "Instagram": {
-          "followers": 17120,
-          "impressions": 1333000,
-          "engagements": 50600,
-          "engagement_rate": null
-        },
-        "Threads": {
-          "followers": 2344,
-          "impressions": null,
-          "engagements": null,
-          "engagement_rate": null
-        },
-        "TikTok": {
-          "followers": 10600,
-          "impressions": 66500,
-          "engagements": 9000,
-          "engagement_rate": null
-        }
-      }
-    }
-  ]
+  "weeks": []
 }

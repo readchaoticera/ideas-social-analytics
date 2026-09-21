@@ -2,8 +2,8 @@
 window.CI_DATA = {
   "brand": "Crooked Ideas",
   "source": "Crooked Media Weekly Social Analytics emails",
-  "generated_from": 11,
-  "placeholder_weeks": 1,
+  "generated_from": 12,
+  "placeholder_weeks": 0,
   "weeks": [
     {
       "week_start": "2026-06-29",
@@ -34,6 +34,12 @@ window.CI_DATA = {
           "impressions": 7345,
           "engagements": 636,
           "engagement_rate": 8.7
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Report_ 6_29-7_5.eml",
@@ -86,6 +92,12 @@ window.CI_DATA = {
           "impressions": 2452,
           "engagements": 215,
           "engagement_rate": 8.8
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Report_ 7_6-7_12.eml",
@@ -138,6 +150,12 @@ window.CI_DATA = {
           "impressions": 2452,
           "engagements": 215,
           "engagement_rate": 8.8
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Social Weekly Analytics_ 7_13-7_19.eml",
@@ -190,6 +208,12 @@ window.CI_DATA = {
           "impressions": 3171,
           "engagements": 237,
           "engagement_rate": 7.5
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 7_20-7_26.eml",
@@ -242,6 +266,12 @@ window.CI_DATA = {
           "impressions": 5329,
           "engagements": 370,
           "engagement_rate": 6.9
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 7_27-8_2.eml",
@@ -294,6 +324,12 @@ window.CI_DATA = {
           "impressions": 5514,
           "engagements": 266,
           "engagement_rate": 4.8
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 8_3-8_9.eml",
@@ -346,6 +382,12 @@ window.CI_DATA = {
           "impressions": 15443,
           "engagements": 1435,
           "engagement_rate": 9.3
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 8_10-8_16.eml",
@@ -398,6 +440,12 @@ window.CI_DATA = {
           "impressions": 16734,
           "engagements": 1042,
           "engagement_rate": 6.2
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 8_17-8_23.eml",
@@ -450,6 +498,12 @@ window.CI_DATA = {
           "impressions": 44135,
           "engagements": 3153,
           "engagement_rate": 7.1
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 8_24-8_30.eml",
@@ -502,6 +556,12 @@ window.CI_DATA = {
           "impressions": 334064,
           "engagements": 76872,
           "engagement_rate": 23.0
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 8_31-9_6.eml",
@@ -554,6 +614,12 @@ window.CI_DATA = {
           "impressions": 167329,
           "engagements": 21123,
           "engagement_rate": 12.6
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
       "source_email": "Weekly Social Analytics_ 9_7-9_13.eml",
@@ -581,52 +647,59 @@ window.CI_DATA = {
       "week_start": "2026-09-14",
       "week_end": "2026-09-20",
       "label": "9/14-9/20",
-      "posts": 30,
+      "posts": 36,
+      "totals": {
+        "followers": 30100,
+        "impressions": 1467151,
+        "engagements": 58687,
+        "engagement_rate": 4.0
+      },
       "platforms": {
         "Instagram": {
-          "followers": 17120,
-          "impressions": 1333000,
-          "engagements": 50600,
-          "engagement_rate": 3.8
+          "followers": 17177,
+          "impressions": 1408661,
+          "engagements": 49931,
+          "engagement_rate": 3.5
         },
         "Threads": {
-          "followers": 2344,
+          "followers": 2341,
           "impressions": null,
           "engagements": null,
           "engagement_rate": null
         },
         "TikTok": {
-          "followers": 10600,
-          "impressions": 66500,
-          "engagements": 9000,
-          "engagement_rate": 13.5
+          "followers": 10536,
+          "impressions": 58490,
+          "engagements": 8721,
+          "engagement_rate": 14.9
+        },
+        "YouTube": {
+          "followers": 46,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       },
-      "placeholder": true,
-      "totals": {
-        "followers": 30064,
-        "impressions": 1399500,
-        "engagements": 59600,
-        "engagement_rate": 4.3
-      },
+      "source_email": "Weekly Social Analytics_ 9_14-9_20.eml",
       "checks": {
         "followers": {
-          "platform_sum": 30064,
-          "reported": 30064,
+          "platform_sum": 30100,
+          "reported": 30100,
           "diff_pct": 0.0
         },
         "impressions": {
-          "platform_sum": 1399500,
-          "reported": 1399500,
+          "platform_sum": 1467151,
+          "reported": 1467151,
           "diff_pct": 0.0
         },
         "engagements": {
-          "platform_sum": 59600,
-          "reported": 59600,
-          "diff_pct": 0.0
+          "platform_sum": 58652,
+          "reported": 58687,
+          "diff_pct": -0.1
         }
       },
-      "platform_rows_suspect": false
+      "platform_rows_suspect": false,
+      "placeholder": false
     }
   ]
 };

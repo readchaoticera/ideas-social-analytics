@@ -15,7 +15,7 @@
 
   <header class="masthead">
     <h1>Crooked Ideas Social Analytics Dashboard</h1>
-    <p class="dek">Every number the weekly leadership email reported for Crooked Ideas, <span id="dek-range"></span> — posts, impressions, engagements and followers, with Instagram and TikTok broken out.</p>
+    <p class="dek">Every number the weekly leadership email reported for Crooked Ideas, <span id="dek-range"></span> — posts, impressions, engagements and followers, with each platform broken out.</p>
     <p class="masthead-meta" id="range-stamp"></p>
   </header>
 
@@ -79,7 +79,8 @@
       <li><strong>Totals are as reported.</strong> The account-total charts plot each email's TOTALS row rather than a sum of its platform rows, which is how the numbers in the weekly deck were produced.</li>
       <li><strong>Where the rows disagree.</strong> Platform rows and the TOTALS row are hand-assembled and rarely agree to the digit. Weeks where they differ by more than 5% on any metric are flagged in the tooltip and greyed in the table. The week of 7/13–7/19 is the notable one: that email repeats the previous week's Instagram and TikTok figures, so its platform split is unreliable even though its totals are not.</li>
       <li><strong>Placeholder weeks.</strong> A week with no email yet can be hand-entered in <code>data/placeholder-weeks.json</code>. It is drawn with a dashed line and hollow markers, labelled in the table, and marked <code>placeholder</code> in the CSV; any metric not supplied stays blank rather than being guessed at. When the real email arrives it replaces the placeholder automatically.</li>
-      <li><strong>Threads.</strong> Followers are reported; impressions and engagements are not, so Threads appears only in the follower charts.</li>
+      <li><strong>Threads and YouTube.</strong> Both report followers only — no impressions or engagements — so they appear in the follower charts alone. YouTube first appears in the 9/14–9/20 email, at 46 followers; earlier weeks have no row for it, which is why its line starts there. On a linear axis it sits on the baseline next to Instagram; switch the platform scale to log to see it.</li>
+      <li><strong>Week-over-week changes are computed</strong> from the totals plotted here, not copied from the WoW figures the email prints beside each number — those occasionally disagree with the email's own totals. For 9/14–9/20, for instance, the email reports engagements down 24% while its printed totals (58,687 against 69,191) work out to −15.2%.</li>
       <li><strong>Engagement rate</strong> is the rate printed in the email, not a recomputed ratio — except on placeholder weeks, where no email printed one and it is computed as engagements ÷ impressions.</li>
       <li>Raw data: <a href="data/crooked-ideas.json">crooked-ideas.json</a>. Rebuild with <code>python3 scripts/parse_emails.py &lt;dir-of-emails&gt;</code>.</li>
     </ul>
