@@ -2,9 +2,67 @@
   "brand": "Crooked Ideas",
   "source": "Crooked Media Weekly Social Analytics emails",
   "generated_from": 12,
-  "manual_weeks": 2,
+  "manual_weeks": 3,
   "placeholder_weeks": 0,
   "weeks": [
+    {
+      "week_start": "2026-06-08",
+      "week_end": "2026-06-14",
+      "label": "6/8-6/14",
+      "placeholder": false,
+      "source_note": "Transcribed from the 6/8-6/14 Weekly Social Analytics email; that email labels the 2.7% total rate a median rather than an aggregate ratio",
+      "posts": 20,
+      "totals": {
+        "followers": 22429,
+        "impressions": 994709,
+        "engagements": 26472,
+        "engagement_rate": 2.7
+      },
+      "platforms": {
+        "Instagram": {
+          "followers": 12899,
+          "impressions": 982375,
+          "engagements": 25496,
+          "engagement_rate": 2.6
+        },
+        "Threads": {
+          "followers": 2255,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 7275,
+          "impressions": 12334,
+          "engagements": 935,
+          "engagement_rate": 7.6
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        }
+      },
+      "checks": {
+        "followers": {
+          "platform_sum": 22429,
+          "reported": 22429,
+          "diff_pct": 0.0
+        },
+        "impressions": {
+          "platform_sum": 994709,
+          "reported": 994709,
+          "diff_pct": 0.0
+        },
+        "engagements": {
+          "platform_sum": 26431,
+          "reported": 26472,
+          "diff_pct": -0.2
+        }
+      },
+      "platform_rows_suspect": false
+    },
     {
       "week_start": "2026-06-15",
       "week_end": "2026-06-21",

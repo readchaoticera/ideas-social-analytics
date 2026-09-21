@@ -2,6 +2,40 @@
   "_comment": "Weeks entered by hand rather than parsed from a .eml. scripts/parse_emails.py merges these in and a real email for the same week always wins. Each entry is provisional unless it says otherwise: set \"placeholder\": false for a week transcribed from a real email, which then renders like any reported week. Metrics left out stay null and render as gaps, never as zero; totals are derived from the platform rows only where they aren't supplied.",
   "weeks": [
     {
+      "week_start": "2026-06-08",
+      "week_end": "2026-06-14",
+      "label": "6/8-6/14",
+      "placeholder": false,
+      "source_note": "Transcribed from the 6/8-6/14 Weekly Social Analytics email; that email labels the 2.7% total rate a median rather than an aggregate ratio",
+      "posts": 20,
+      "totals": {
+        "followers": 22429,
+        "impressions": 994709,
+        "engagements": 26472,
+        "engagement_rate": 2.7
+      },
+      "platforms": {
+        "Instagram": {
+          "followers": 12899,
+          "impressions": 982375,
+          "engagements": 25496,
+          "engagement_rate": 2.6
+        },
+        "Threads": {
+          "followers": 2255,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 7275,
+          "impressions": 12334,
+          "engagements": 935,
+          "engagement_rate": 7.6
+        }
+      }
+    },
+    {
       "week_start": "2026-06-15",
       "week_end": "2026-06-21",
       "label": "6/15-6/21",
