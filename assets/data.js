@@ -3,8 +3,125 @@ window.CI_DATA = {
   "brand": "Crooked Ideas",
   "source": "Crooked Media Weekly Social Analytics emails",
   "generated_from": 12,
+  "manual_weeks": 2,
   "placeholder_weeks": 0,
   "weeks": [
+    {
+      "week_start": "2026-06-15",
+      "week_end": "2026-06-21",
+      "label": "6/15-6/21",
+      "placeholder": false,
+      "source_note": "Transcribed from the 6/15-6/21 Weekly Social Analytics email; that email labels the 3.6% total rate a median rather than an aggregate ratio",
+      "posts": 17,
+      "totals": {
+        "followers": 22734,
+        "impressions": 685573,
+        "engagements": 24620,
+        "engagement_rate": 3.6
+      },
+      "platforms": {
+        "Instagram": {
+          "followers": 13146,
+          "impressions": 670893,
+          "engagements": 23283,
+          "engagement_rate": 3.5
+        },
+        "Threads": {
+          "followers": 2262,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 7326,
+          "impressions": 14680,
+          "engagements": 1328,
+          "engagement_rate": 9.0
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        }
+      },
+      "checks": {
+        "followers": {
+          "platform_sum": 22734,
+          "reported": 22734,
+          "diff_pct": 0.0
+        },
+        "impressions": {
+          "platform_sum": 685573,
+          "reported": 685573,
+          "diff_pct": 0.0
+        },
+        "engagements": {
+          "platform_sum": 24611,
+          "reported": 24620,
+          "diff_pct": -0.0
+        }
+      },
+      "platform_rows_suspect": false
+    },
+    {
+      "week_start": "2026-06-22",
+      "week_end": "2026-06-28",
+      "label": "6/22-6/28",
+      "placeholder": false,
+      "source_note": "Transcribed from the 6/22-6/28 Weekly Social Analytics email",
+      "posts": 17,
+      "totals": {
+        "followers": 22951,
+        "impressions": 727653,
+        "engagements": 21075,
+        "engagement_rate": 2.9
+      },
+      "platforms": {
+        "Instagram": {
+          "followers": 13324,
+          "impressions": 704064,
+          "engagements": 19791,
+          "engagement_rate": 2.8
+        },
+        "Threads": {
+          "followers": 2266,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 7361,
+          "impressions": 23589,
+          "engagements": 1238,
+          "engagement_rate": 5.2
+        },
+        "YouTube": {
+          "followers": null,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        }
+      },
+      "checks": {
+        "followers": {
+          "platform_sum": 22951,
+          "reported": 22951,
+          "diff_pct": 0.0
+        },
+        "impressions": {
+          "platform_sum": 727653,
+          "reported": 727653,
+          "diff_pct": 0.0
+        },
+        "engagements": {
+          "platform_sum": 21029,
+          "reported": 21075,
+          "diff_pct": -0.2
+        }
+      },
+      "platform_rows_suspect": false
+    },
     {
       "week_start": "2026-06-29",
       "week_end": "2026-07-05",

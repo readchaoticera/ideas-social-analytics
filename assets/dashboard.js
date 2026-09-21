@@ -322,31 +322,40 @@
       /* direct labels: every point on the single-series brand charts,
          end-of-line only when several series share the plot */
       if (cfg.labelAll && !multi) {
-        /* Label every point the way the weekly deck does, but drop any that
-           would collide with its neighbour (or with the always-kept last one). */
-        var gap = narrow ? 40 : 34;
-        var lastX = pts[pts.length - 1].x;
-        var keep = {};
-        var prevX = -Infinity;
-        pts.forEach(function (p, k) {
-          if (k === pts.length - 1) { keep[k] = true; return; }
-          if (p.x - prevX < gap || lastX - p.x < gap) return;
-          keep[k] = true;
-          prevX = p.x;
-        });
-        pts.forEach(function (p, k) {
-          if (!keep[k]) return;
+        /* Label every point the way the weekly deck does, but measure each one:
+           as weeks accumulate the labels crowd, and a collision is worse than a
+           gap. The last point always keeps its label. */
+        var size = narrow ? 12 : 14;
+        var labels = pts.map(function (p, k) {
+          var str = cfg.format === "pct" ? pct(p.v) : compact(p.v);
+          var next = pts[k + 1];
+          var prev = pts[k - 1];
           var anchor = k === 0 ? "start" : k === pts.length - 1 ? "end" : "middle";
           /* Keep the label off its own line: shift it away from whichever
              neighbouring segment is steep enough to run through it. */
-          var next = pts[k + 1];
-          var prev = pts[k - 1];
           if (anchor === "middle" && next && next.x - p.x < 100 && p.y - next.y > 42) anchor = "end";
           if (prev && p.x - prev.x < 100 && p.y - prev.y > 42 && anchor !== "end") anchor = "start";
-          svg.appendChild(text(cfg.format === "pct" ? pct(p.v) : compact(p.v), {
-            x: p.x + (anchor === "start" ? 2 : anchor === "end" ? -5 : 0),
-            y: p.y - 16, "text-anchor": anchor,
-            fill: "var(--ink)", "font-size": narrow ? 12 : 14,
+          var width = str.length * size * 0.62;
+          var x = p.x + (anchor === "start" ? 2 : anchor === "end" ? -2 : 0);
+          var left = anchor === "start" ? x : anchor === "end" ? x - width : x - width / 2;
+          return { p: p, str: str, anchor: anchor, x: x, left: left, right: left + width };
+        });
+
+        var final = labels[labels.length - 1];
+        var keep = [final];
+        var edge = -Infinity;
+        labels.forEach(function (lab, k) {
+          if (k === labels.length - 1) return;
+          if (lab.left < edge + 7) return;          // would touch the last one kept
+          if (lab.right + 7 > final.left) return;   // would crowd the final label
+          keep.push(lab);
+          edge = lab.right;
+        });
+
+        keep.forEach(function (lab) {
+          svg.appendChild(text(lab.str, {
+            x: lab.x, y: lab.p.y - 16, "text-anchor": lab.anchor,
+            fill: "var(--ink)", "font-size": size,
             "font-weight": 800, "font-stretch": "90%"
           }));
         });
@@ -894,6 +903,7 @@
           cell.title = "Platform rows for this week don't reconcile with the reported total";
         }
         cell.textContent = c.get(w);
+        if (c.row && w.source_note) cell.title = w.source_note;
         if (c.row && w.placeholder) {
           var tag = document.createElement("span");
           tag.className = "badge";
@@ -924,7 +934,7 @@
         w.totals.followers, w.totals.engagement_rate, ig.followers, ig.impressions, ig.engagements,
         ig.engagement_rate, tt.followers, tt.impressions, tt.engagements, tt.engagement_rate,
         th.followers, yt.followers, w.platform_rows_suspect ? "no" : "yes",
-        w.placeholder ? "placeholder" : "weekly email"]);
+        w.placeholder ? "placeholder" : w.source_email ? "weekly email" : "transcribed"]);
     });
     return rows.map(function (r) {
       return r.map(function (c) { return c === null || c === undefined ? "" : c; }).join(",");

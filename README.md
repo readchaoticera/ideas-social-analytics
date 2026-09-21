@@ -14,7 +14,7 @@ assets/dashboard.js      hand-rolled SVG charts, tooltips, filters, table, CSV e
 assets/data.js           generated — the dataset as window.CI_DATA
 assets/fonts/            Archivo (variable, latin subset), SIL OFL 1.1
 data/crooked-ideas.json  generated — the canonical dataset
-data/placeholder-weeks.json  hand-entered weeks with no email yet (see below)
+data/manual-weeks.json   weeks entered by hand rather than parsed (see below)
 scripts/parse_emails.py  reads the weekly .eml files and writes both generated files
 ```
 
@@ -47,21 +47,26 @@ That rewrites `data/crooked-ideas.json` and `assets/data.js` from whatever `.eml
 files it finds (any Python 3, no dependencies). Commit both, and the dashboard
 picks the new week up — charts, tiles, table and CSV all read the same file.
 
-## Placeholder weeks
+## Hand-entered weeks
 
-A week with no email yet can be hand-entered in `data/placeholder-weeks.json`:
+A week with no `.eml` on hand goes in `data/manual-weeks.json`:
 
 ```json
 { "week_start": "2026-09-14", "week_end": "2026-09-20", "label": "9/14-9/20",
   "platforms": { "Instagram": { "followers": 17120, "impressions": 1333000 } } }
 ```
 
-The parser merges it in, marks it `placeholder: true`, and derives the totals it
-can from the platform rows. Anything not supplied stays `null` and renders as a
-gap, never as a zero. On the page these weeks are drawn with a dashed line,
-hollow markers and a washed-back fill, labelled in the table and the tooltip, and
-marked `placeholder` in the CSV. When the real email arrives, the parsed week
-wins automatically — the entry can be deleted at your leisure.
+The parser merges it in and derives any totals it can from the platform rows.
+Anything not supplied stays `null` and renders as a gap, never as a zero. A
+parsed email for the same week always wins, so entries can be left in place
+until their email lands.
+
+Entries are **provisional by default** — drawn with a dashed line, hollow markers
+and a washed-back fill, labelled in the table and tooltip, and marked
+`placeholder` in the CSV. An entry transcribed from a real email should set
+`"placeholder": false`; it then renders like any reported week, and a
+`"source_note"` explaining where it came from shows on hover in the table and
+lands in the JSON. The weeks of 6/15-6/21 and 6/22-6/28 are transcribed this way.
 
 ## How the numbers are derived
 

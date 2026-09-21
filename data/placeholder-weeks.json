@@ -1,4 +1,0 @@
-{
-  "_comment": "Hand-entered weeks that have no Weekly Social Analytics email yet. scripts/parse_emails.py merges these in, marks them placeholder: true, and derives any totals it can from the platform rows. A real email for the same week always wins, so these can be left in place until the email lands. Metrics that were not supplied stay null and render as gaps, never as zero.",
-  "weeks": []
-}
