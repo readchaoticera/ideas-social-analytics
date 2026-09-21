@@ -326,10 +326,15 @@
            as weeks accumulate the labels crowd, and a collision is worse than a
            gap. The last point always keeps its label. */
         var size = narrow ? 12 : 14;
-        var labels = pts.map(function (p, k) {
+        var labels = [];
+        pts.forEach(function (p, k) {
           var str = cfg.format === "pct" ? pct(p.v) : compact(p.v);
           var next = pts[k + 1];
           var prev = pts[k - 1];
+          /* The first point can't shift left — it's against the axis — so if a
+             steep climb leaves it, the label has nowhere to go: skip it and let
+             the tooltip and table carry the value. */
+          if (k === 0 && next && next.x - p.x < 100 && p.y - next.y > 42) return;
           var anchor = k === 0 ? "start" : k === pts.length - 1 ? "end" : "middle";
           /* Keep the label off its own line: shift it away from whichever
              neighbouring segment is steep enough to run through it. */
@@ -338,14 +343,15 @@
           var width = str.length * size * 0.62;
           var x = p.x + (anchor === "start" ? 2 : anchor === "end" ? -2 : 0);
           var left = anchor === "start" ? x : anchor === "end" ? x - width : x - width / 2;
-          return { p: p, str: str, anchor: anchor, x: x, left: left, right: left + width };
+          labels.push({ p: p, str: str, anchor: anchor, x: x, left: left, right: left + width });
         });
+        if (!labels.length) return;
 
         var final = labels[labels.length - 1];
         var keep = [final];
         var edge = -Infinity;
         labels.forEach(function (lab, k) {
-          if (k === labels.length - 1) return;
+          if (k === labels.length - 1) return;   // the final label is already kept
           if (lab.left < edge + 7) return;          // would touch the last one kept
           if (lab.right + 7 > final.left) return;   // would crowd the final label
           keep.push(lab);
@@ -989,6 +995,17 @@
     document.getElementById("source-range").textContent =
       md(first.week_start) + "/" + first.week_start.slice(0, 4) + " – " + md(last.week_end) + "/" + year;
     document.getElementById("range-all").textContent = "All " + WEEKS.length;
+
+    var transcribed = WEEKS.filter(function (w) {
+      return !w.placeholder && !w.source_email;
+    }).map(weekLabel);
+    if (transcribed.length) {
+      document.getElementById("transcribed-weeks").textContent =
+        transcribed.length === 1
+          ? "The week of " + transcribed[0] + " is transcribed"
+          : "The weeks of " + transcribed.slice(0, -1).join(", ") +
+            " and " + transcribed[transcribed.length - 1] + " are transcribed";
+    }
 
     document.getElementById("latest-badge").hidden = !last.placeholder;
     if (last.placeholder) {
