@@ -188,7 +188,9 @@
 
     var pad = {
       top: cfg.labelAll ? 34 : 26,
-      right: multi ? (narrow ? 16 : 52) : cfg.labelAll ? 40 : 18,
+      /* room for a final label pushed to the right of its point when a steep
+         segment blocks the space to the left */
+      right: multi ? (narrow ? 16 : 52) : cfg.labelAll ? (narrow ? 42 : 50) : 18,
       bottom: 30,
       left: narrow ? 40 : 52
     };
@@ -322,38 +324,67 @@
       /* direct labels: every point on the single-series brand charts,
          end-of-line only when several series share the plot */
       if (cfg.labelAll && !multi) {
-        /* Label every point the way the weekly deck does, but measure each one:
-           as weeks accumulate the labels crowd, and a collision is worse than a
-           gap. The last point always keeps its label. */
+        /* Label every point the way the weekly deck does, but place each one
+           by testing it: try the anchors in preference order and take the first
+           whose box clears both adjoining segments and the plot edges. A point
+           in a tight V has no free flank and simply goes unlabelled — the
+           tooltip and the table still carry every value. */
         var size = narrow ? 12 : 14;
+        var minX = pad.left - 4;
+        var maxX = w - 4;
+
+        var boxFor = function (p, anchor, width) {
+          var x = p.x + (anchor === "start" ? 2 : anchor === "end" ? -2 : 0);
+          var left = anchor === "start" ? x : anchor === "end" ? x - width : x - width / 2;
+          var baseline = p.y - 16;
+          return {
+            anchor: anchor, x: x, left: left, right: left + width,
+            top: baseline - size * 0.82, bottom: baseline + size * 0.22
+          };
+        };
+
+        var clearsSegment = function (box, a, b) {
+          if (!a || !b) return true;
+          for (var i = 0; i <= 28; i++) {
+            var t = i / 28;
+            var x = a.x + (b.x - a.x) * t;
+            var y = a.y + (b.y - a.y) * t;
+            if (x >= box.left - 2 && x <= box.right + 2 && y >= box.top - 2 && y <= box.bottom + 2) {
+              return false;
+            }
+          }
+          return true;
+        };
+
         var labels = [];
         pts.forEach(function (p, k) {
           var str = cfg.format === "pct" ? pct(p.v) : compact(p.v);
-          var next = pts[k + 1];
-          var prev = pts[k - 1];
-          /* The first point can't shift left — it's against the axis — so if a
-             steep climb leaves it, the label has nowhere to go: skip it and let
-             the tooltip and table carry the value. */
-          if (k === 0 && next && next.x - p.x < 100 && p.y - next.y > 42) return;
-          var anchor = k === 0 ? "start" : k === pts.length - 1 ? "end" : "middle";
-          /* Keep the label off its own line: shift it away from whichever
-             neighbouring segment is steep enough to run through it. */
-          if (anchor === "middle" && next && next.x - p.x < 100 && p.y - next.y > 42) anchor = "end";
-          if (prev && p.x - prev.x < 100 && p.y - prev.y > 42 && anchor !== "end") anchor = "start";
           var width = str.length * size * 0.62;
-          var x = p.x + (anchor === "start" ? 2 : anchor === "end" ? -2 : 0);
-          var left = anchor === "start" ? x : anchor === "end" ? x - width : x - width / 2;
-          labels.push({ p: p, str: str, anchor: anchor, x: x, left: left, right: left + width });
+          var prev = pts[k - 1];
+          var next = pts[k + 1];
+          var order = k === 0 ? ["start", "middle"]
+            : k === pts.length - 1 ? ["end", "start", "middle"]
+            : ["middle", "end", "start"];
+          for (var o = 0; o < order.length; o++) {
+            var box = boxFor(p, order[o], width);
+            if (box.left < minX || box.right > maxX) continue;
+            if (!clearsSegment(box, prev, p) || !clearsSegment(box, p, next)) continue;
+            box.p = p;
+            box.str = str;
+            labels.push(box);
+            return;
+          }
         });
         if (!labels.length) return;
 
+        /* Then thin horizontally: the last label always wins. */
         var final = labels[labels.length - 1];
         var keep = [final];
         var edge = -Infinity;
         labels.forEach(function (lab, k) {
-          if (k === labels.length - 1) return;   // the final label is already kept
-          if (lab.left < edge + 7) return;          // would touch the last one kept
-          if (lab.right + 7 > final.left) return;   // would crowd the final label
+          if (k === labels.length - 1) return;
+          if (lab.left < edge + 7) return;
+          if (lab.right + 7 > final.left) return;
           keep.push(lab);
           edge = lab.right;
         });
