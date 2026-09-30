@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Extract the Crooked Ideas weekly numbers from the Weekly Social Analytics emails.
 
-Usage: python3 scripts/parse_emails.py <dir-of-.eml-files> [out.json]
+Usage: python3 scripts/parse_emails.py [dir-of-.eml-files] [out.json]
+
+Defaults to data/emails, the Crooked Ideas sections kept in this repository by
+scripts/ingest_email.py. Point it at a folder of full .eml files to parse those
+instead — it reads either.
 
 Writes the canonical JSON (default data/crooked-ideas.json) and a sibling
 assets/data.js that assigns the same payload to window.CI_DATA, so the dashboard
@@ -83,6 +87,8 @@ def parse_table(seg):
 
 def week_dates(subject, year=2026):
     m = re.search(r"(\d{1,2})/(\d{1,2})\s*[-–]\s*(\d{1,2})/(\d{1,2})", subject)
+    if not m:
+        raise ValueError("no week range (like 9/21-9/27) in subject: %r" % subject)
     sm, sd, em, ed = (int(x) for x in m.groups())
     return (
         "%d-%02d-%02d" % (year, sm, sd),
@@ -203,4 +209,5 @@ def main(src, dest):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else "data/crooked-ideas.json")
+    main(sys.argv[1] if len(sys.argv) > 1 else "data/emails",
+         sys.argv[2] if len(sys.argv) > 2 else "data/crooked-ideas.json")

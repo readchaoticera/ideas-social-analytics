@@ -275,7 +275,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Report_ 6_29-7_5.eml",
+      "source_email": "2026-07-05.eml",
       "checks": {
         "followers": {
           "platform_sum": 23016,
@@ -333,7 +333,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Report_ 7_6-7_12.eml",
+      "source_email": "2026-07-12.eml",
       "checks": {
         "followers": {
           "platform_sum": 23195,
@@ -391,7 +391,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Social Weekly Analytics_ 7_13-7_19.eml",
+      "source_email": "2026-07-19.eml",
       "checks": {
         "followers": {
           "platform_sum": 23578,
@@ -449,7 +449,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 7_20-7_26.eml",
+      "source_email": "2026-07-26.eml",
       "checks": {
         "followers": {
           "platform_sum": 23795,
@@ -507,7 +507,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 7_27-8_2.eml",
+      "source_email": "2026-08-02.eml",
       "checks": {
         "followers": {
           "platform_sum": 23882,
@@ -565,7 +565,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 8_3-8_9.eml",
+      "source_email": "2026-08-09.eml",
       "checks": {
         "followers": {
           "platform_sum": 23947,
@@ -623,7 +623,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 8_10-8_16.eml",
+      "source_email": "2026-08-16.eml",
       "checks": {
         "followers": {
           "platform_sum": 24112,
@@ -681,7 +681,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 8_17-8_23.eml",
+      "source_email": "2026-08-23.eml",
       "checks": {
         "followers": {
           "platform_sum": 24433,
@@ -739,7 +739,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 8_24-8_30.eml",
+      "source_email": "2026-08-30.eml",
       "checks": {
         "followers": {
           "platform_sum": 24704,
@@ -797,7 +797,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 8_31-9_6.eml",
+      "source_email": "2026-09-06.eml",
       "checks": {
         "followers": {
           "platform_sum": 28145,
@@ -855,7 +855,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 9_7-9_13.eml",
+      "source_email": "2026-09-13.eml",
       "checks": {
         "followers": {
           "platform_sum": 29296,
@@ -913,7 +913,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 9_14-9_20.eml",
+      "source_email": "2026-09-20.eml",
       "checks": {
         "followers": {
           "platform_sum": 30100,
@@ -971,7 +971,7 @@ window.CI_DATA = {
           "engagement_rate": null
         }
       },
-      "source_email": "Weekly Social Analytics_ 9_21-9_27.eml",
+      "source_email": "2026-09-27.eml",
       "checks": {
         "followers": {
           "platform_sum": 30446,

@@ -15,37 +15,98 @@ assets/data.js           generated — the dataset as window.CI_DATA
 assets/fonts/            Archivo (variable, latin subset), SIL OFL 1.1
 data/crooked-ideas.json  generated — the canonical dataset
 data/manual-weeks.json   weeks entered by hand rather than parsed (see below)
-scripts/parse_emails.py  reads the weekly .eml files and writes both generated files
+scripts/parse_emails.py  reads .eml files and writes both generated files
+scripts/ingest_email.py  keeps one email's Crooked Ideas section in data/emails/
+scripts/gmail-forwarder.gs  Apps Script that forwards the weekly email to GitHub
+data/emails/             the stored Crooked Ideas sections, one file per week
+.github/workflows/       the Action that ingests an email and rebuilds the data
 ```
 
 Everything is static and self-contained: no CDN, no third-party requests, no
 network at runtime. Opening `index.html` from disk works too.
 
-## Publishing to GitHub Pages
+## Published at
 
-1. Merge this branch into the branch you publish from (usually `main`).
-2. **Settings → Pages → Build and deployment → Deploy from a branch**, pick that
-   branch and the `/ (root)` folder.
-3. The site goes live at `https://<owner>.github.io/<repo>/`.
+**https://readchaoticera.github.io/ideas-social-analytics/**
 
-`.nojekyll` is committed so Pages serves the files as-is.
+Pages deploys from this repository's default branch, root folder; `.nojekyll` is
+committed so the files are served as-is. A push republishes the site within a
+minute or two, though assets are cached for ten minutes — hard-refresh
+(Cmd/Ctrl+Shift+R) if an update looks missing.
 
-> **Note:** a GitHub Pages site on a public repo is public. These are internal
-> numbers — keep the repository private (Pages on a private repo requires GitHub
-> Enterprise Cloud) or confirm the figures are OK to publish before turning Pages on.
+> **Note:** a Pages site on a public repo is public. These are internal numbers —
+> keep the repository private (Pages on a private repo requires GitHub
+> Enterprise Cloud) or confirm the figures are fine to publish.
 
 ## Updating with a new week
 
-The source emails are **not** committed — they contain every Crooked brand's
-numbers, not just Crooked Ideas. Keep them in a local folder and regenerate:
+Automatic, once set up (see below): the weekly email arrives, a Gmail script
+forwards it to GitHub, an Action stores the Crooked Ideas section and rebuilds
+the data, and Pages redeploys. Nothing to do by hand.
+
+To do it manually — or to backfill — point the parser at a folder of `.eml`
+files:
 
 ```bash
-python3 scripts/parse_emails.py ~/path/to/weekly-emails data/crooked-ideas.json
+python3 scripts/parse_emails.py ~/path/to/weekly-emails
 ```
 
-That rewrites `data/crooked-ideas.json` and `assets/data.js` from whatever `.eml`
-files it finds (any Python 3, no dependencies). Commit both, and the dashboard
-picks the new week up — charts, tiles, table and CSV all read the same file.
+With no argument it rebuilds from `data/emails/`, the sections already stored
+here. Either way it rewrites `data/crooked-ideas.json` and `assets/data.js`
+(any Python 3, no dependencies). Commit both and the dashboard picks the week
+up — charts, tiles, table and CSV all read the same file.
+
+**Whole emails are never committed.** They carry every Crooked brand's numbers;
+`scripts/ingest_email.py` keeps only the Crooked Ideas section, in email form so
+the same parser reads it. That is what lives in `data/emails/`, which is why the
+full dataset can be rebuilt from this repository alone.
+
+## Automating the weekly email
+
+Three pieces: a Gmail script that forwards the email, a token so it can reach
+GitHub, and an Action that does the work.
+
+**1. Create a token.** GitHub → Settings → Developer settings → Personal access
+tokens → Fine-grained tokens. Give it access to this repository only, with
+**Repository permissions → Contents: Read and write**. Copy the token; set a
+calendar reminder for its expiry, since the sync goes quiet when it lapses.
+
+**2. Set up the Gmail script.** At [script.google.com](https://script.google.com),
+create a new project and paste in `scripts/gmail-forwarder.gs`. Then:
+
+- Project Settings → Script properties → add `GITHUB_TOKEN` with the token above.
+- Check the `CONFIG` block at the top — the repository is already filled in, and
+  `query` is the Gmail search that finds the email.
+- Run `previewMatches` once. It sends nothing and logs which emails it found,
+  so you can confirm the search is right before anything is live. Google will
+  ask you to authorise Gmail access on this first run.
+- Run `installTrigger` once. That schedules `syncWeeklyAnalytics` daily; it does
+  nothing on days with no new email, so the exact hour does not matter.
+
+**3. That's it.** When an email arrives the script posts its subject and plain
+text to GitHub, the **Weekly analytics** workflow stores the section, rebuilds
+the data and commits, and Pages republishes a few minutes later. The thread gets
+the label `Ideas dashboard synced` so it is never sent twice, and re-sending the
+same week changes nothing.
+
+### When it breaks
+
+- **The workflow ran and failed** → open it under the repository's Actions tab.
+  The ingest step fails loudly rather than committing something wrong: no
+  Crooked Ideas section, no week range in the subject, or a section with no
+  metrics table. Usually the email's shape changed; the parser is the thing to
+  adjust.
+- **Nothing happened at all** → run `previewMatches` in Apps Script. Either the
+  search missed the email (subjects have varied: "Weekly Social Analytics",
+  "Social Weekly Analytics", "Weekly Social Report") or the token expired, which
+  shows up as a `401` in the Apps Script execution log.
+- **A week needs fixing by hand** → edit its file in `data/emails/`, run
+  `python3 scripts/parse_emails.py`, and commit. Or run the workflow manually
+  from the Actions tab to rebuild without an email.
+
+The workflow lives on the default branch because `repository_dispatch` only
+triggers there. If the default branch is ever renamed, the workflow file has to
+move with it.
 
 ## Hand-entered weeks
 

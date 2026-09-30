@@ -1,0 +1,77 @@
+name: Weekly analytics
+
+# Fired by the Gmail forwarder (scripts/gmail-forwarder.gs) when a new Weekly
+# Social Analytics email arrives, and runnable by hand for a rebuild.
+#
+# repository_dispatch only runs workflows from the DEFAULT branch, so this file
+# has to live there.
+
+on:
+  repository_dispatch:
+    types: [weekly-analytics]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-analytics
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Through an env var, never interpolated into the shell: the payload is
+      # email text from outside this repository.
+      - name: Save payload
+        if: github.event_name == 'repository_dispatch'
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: printf '%s' "$PAYLOAD" > "$RUNNER_TEMP/payload.json"
+
+      - name: Store the Crooked Ideas section
+        if: github.event_name == 'repository_dispatch'
+        run: python3 scripts/ingest_email.py "$RUNNER_TEMP/payload.json"
+
+      - name: Rebuild the dataset
+        run: python3 scripts/parse_emails.py
+
+      - name: Commit if anything changed
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data assets/data.js
+          if git diff --cached --quiet; then
+            echo "Nothing changed — already up to date."
+            exit 0
+          fi
+          WEEK=$(python3 -c "import json;print(json.load(open('data/crooked-ideas.json'))['weeks'][-1]['label'])")
+          git commit -m "Add weekly analytics for ${WEEK}" -m "Ingested from the Weekly Social Analytics email by the weekly-analytics workflow."
+          git push
+
+      - name: Summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("data/crooked-ideas.json"))
+          w = d["weeks"][-1]
+          t = w["totals"]
+          print("## %s weeks · latest %s\n" % (len(d["weeks"]), w["label"]))
+          print("| Metric | Value |")
+          print("| --- | --- |")
+          print("| Posts | %s |" % w["posts"])
+          print("| Impressions | %s |" % format(t["impressions"] or 0, ","))
+          print("| Engagements | %s |" % format(t["engagements"] or 0, ","))
+          print("| Followers | %s |" % format(t["followers"] or 0, ","))
+          if w["platform_rows_suspect"]:
+              print("\n> Platform rows for this week do not reconcile with the reported total.")
+          PY
