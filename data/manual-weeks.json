@@ -1,5 +1,5 @@
 {
-  "_comment": "Weeks entered by hand rather than parsed from a .eml. scripts/parse_emails.py merges these in and a real email for the same week always wins. Each entry is provisional unless it says otherwise: set \"placeholder\": false for a week transcribed from a real email, which then renders like any reported week. Metrics left out stay null and render as gaps, never as zero; totals are derived from the platform rows only where they aren't supplied.",
+  "_comment": "Weeks entered by hand rather than parsed from a .eml. scripts/parse_emails.py merges these in and a real email for the same week always wins. Each entry is provisional unless it says otherwise: set \"placeholder\": false for a week transcribed from a real email, which then renders like any reported week. Metrics left out stay null and render as gaps, never as zero. Totals are derived from the platform rows for any metric the entry omits; write a metric as an explicit null under \"totals\" to leave it blank instead, which is what you want when an account's number is missing and summing the rest would look like a decline.",
   "weeks": [
     {
       "week_start": "2026-06-01",
@@ -134,6 +134,40 @@
           "impressions": 23589,
           "engagements": 1238,
           "engagement_rate": 5.2
+        }
+      }
+    },
+    {
+      "week_start": "2026-09-28",
+      "week_end": "2026-10-04",
+      "label": "9/28-10/4",
+      "placeholder": true,
+      "source_note": "Mid-week figures entered by hand on 10/1, to be replaced by the 9/28-10/4 email",
+      "posts": 35,
+      "platforms": {
+        "Instagram": {
+          "followers": 17485,
+          "impressions": 550000,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "Threads": {
+          "followers": 2375,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 10800,
+          "impressions": 22000,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "YouTube": {
+          "followers": 85,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
         }
       }
     }

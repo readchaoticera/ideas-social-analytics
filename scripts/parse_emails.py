@@ -144,9 +144,13 @@ def manual_weeks(dest):
         for row in platforms.values():
             if row["engagement_rate"] is None and row["impressions"] and row["engagements"]:
                 row["engagement_rate"] = round(row["engagements"] / row["impressions"] * 100, 1)
+        # A metric written as an explicit null in the entry's totals is a
+        # known-unknown: leave it blank. Only an absent key gets derived, since
+        # summing platform rows that are missing an account would read as a
+        # drop rather than as a gap.
         totals = dict(week.get("totals") or {})
         for metric in ("followers", "impressions", "engagements"):
-            if totals.get(metric) is None:
+            if metric not in totals:
                 vals = [platforms[n][metric] for n in platforms if platforms[n][metric] is not None]
                 totals[metric] = sum(vals) if vals else None
         if totals.get("engagement_rate") is None and totals["impressions"] and totals["engagements"]:
