@@ -136,40 +136,6 @@
           "engagement_rate": 5.2
         }
       }
-    },
-    {
-      "week_start": "2026-09-28",
-      "week_end": "2026-10-04",
-      "label": "9/28-10/4",
-      "placeholder": true,
-      "source_note": "Mid-week figures entered by hand on 10/1, to be replaced by the 9/28-10/4 email",
-      "posts": 35,
-      "platforms": {
-        "Instagram": {
-          "followers": 17485,
-          "impressions": 550000,
-          "engagements": null,
-          "engagement_rate": null
-        },
-        "Threads": {
-          "followers": 2375,
-          "impressions": null,
-          "engagements": null,
-          "engagement_rate": null
-        },
-        "TikTok": {
-          "followers": 10800,
-          "impressions": 22000,
-          "engagements": null,
-          "engagement_rate": null
-        },
-        "YouTube": {
-          "followers": 85,
-          "impressions": null,
-          "engagements": null,
-          "engagement_rate": null
-        }
-      }
     }
   ]
 }
