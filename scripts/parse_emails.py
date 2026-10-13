@@ -70,13 +70,22 @@ def parse_table(seg):
             continue
         if current is None:
             continue
+        # A cell is usually a value on one line and its "(+623 WoW)" note on the
+        # next, but some weeks put both on one line — the 10/5-10/11 TOTALS row
+        # reads "31,779 (+623 WoW)". Split those rather than losing the value.
+        value, note = tok, None
         if tok.startswith("("):
-            # WoW note trailing the value just recorded
+            value, note = None, tok
+        elif "(" in tok:
+            value, note = tok.split("(", 1)
+            note = "(" + note
+
+        if value is not None:
+            rows[current]["values"].append(num(value))
+        if note:
             while len(rows[current]["wow"]) < len(rows[current]["values"]) - 1:
                 rows[current]["wow"].append(None)
-            rows[current]["wow"].append(tok.strip("()").replace(" WoW", "").replace(" Wow", ""))
-        else:
-            rows[current]["values"].append(num(tok))
+            rows[current]["wow"].append(note.strip("()").replace(" WoW", "").replace(" Wow", ""))
     out = {}
     for name, row in rows.items():
         vals = row["values"][:4]
