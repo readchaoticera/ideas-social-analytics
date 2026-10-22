@@ -888,6 +888,188 @@
     buildTable();
   }
 
+  /* ---------------- audience demographics ---------------- */
+
+  /* Shares are drawn on a fixed 0-100% scale. Scaling each chart to its own
+     largest band would make a 38% band and a 52% band look alike, and these
+     cards sit side by side. */
+  function barBlock(host, heading, rows, color) {
+    var block = document.createElement("div");
+    block.className = "bars";
+
+    var title = document.createElement("h4");
+    title.textContent = heading;
+    block.appendChild(title);
+
+    var plot = document.createElement("div");
+    plot.className = "plot";
+    var tip = document.createElement("div");
+    tip.className = "tip";
+    plot.appendChild(tip);
+    block.appendChild(plot);
+    host.appendChild(block);
+
+    function draw() {
+      var w = Math.max(plot.clientWidth || host.clientWidth || 320, 240);
+      var narrow = w < 380;
+      var size = narrow ? 11 : 12;
+      /* One row printed as 38.0 and its neighbour as 28 reads as a typo, so the
+         whole block follows whichever the platform used. */
+      var decimals = rows.some(function (r) { return r.value % 1 !== 0; }) ? 1 : 0;
+      var fmt = function (v) { return v.toFixed(decimals) + "%"; };
+      var labelW = rows.reduce(function (m, r) {
+        return Math.max(m, r.label.length * size * 0.62);
+      }, 0) + 10;
+      var valueW = narrow ? 42 : 48;
+      var rowH = narrow ? 24 : 27;
+      var bar = Math.min(16, rowH - 10);
+      var h = rows.length * rowH + 6;
+      var trackX = labelW;
+      var trackW = Math.max(w - labelW - valueW, 40);
+
+      var svg = el("svg", {
+        width: w, height: h, viewBox: "0 0 " + w + " " + h,
+        role: "img", "aria-label": heading + " breakdown"
+      });
+
+      rows.forEach(function (r, i) {
+        var y = i * rowH + 3;
+        var mid = y + rowH / 2 - 3;
+
+        svg.appendChild(text(r.label, {
+          x: 0, y: mid + 4, "text-anchor": "start",
+          fill: "var(--ink-secondary)", "font-size": size, "font-stretch": "90%"
+        }));
+
+        /* the track shows the share of the whole that is not this band */
+        svg.appendChild(el("rect", {
+          x: trackX, y: mid - bar / 2 + 1, width: trackW, height: bar - 2,
+          rx: 2, fill: "var(--rule)", opacity: 0.5
+        }));
+
+        var len = Math.max((r.value / 100) * trackW, r.value > 0 ? 3 : 0);
+        if (len > 0) {
+          svg.appendChild(el("rect", {
+            x: trackX, y: mid - bar / 2, width: len, height: bar,
+            rx: 4, fill: color
+          }));
+        }
+
+        svg.appendChild(text(fmt(r.value), {
+          x: w, y: mid + 4, "text-anchor": "end",
+          fill: "var(--ink)", "font-size": size, "font-weight": 800, "font-stretch": "90%"
+        }));
+
+        /* hit area spans the whole row, not just the painted bar */
+        var hit = el("rect", {
+          x: 0, y: y, width: w, height: rowH, fill: "transparent",
+          style: "cursor:default"
+        });
+        hit.addEventListener("pointerenter", function () {
+          while (tip.firstChild) tip.removeChild(tip.firstChild);
+          var head = document.createElement("div");
+          head.className = "tip-head";
+          head.textContent = heading;
+          var row = document.createElement("div");
+          row.className = "tip-row";
+          var val = document.createElement("span");
+          val.className = "tip-val";
+          val.textContent = fmt(r.value);
+          var name = document.createElement("span");
+          name.className = "tip-name";
+          name.textContent = r.label;
+          row.appendChild(val);
+          row.appendChild(name);
+          tip.appendChild(head);
+          tip.appendChild(row);
+          tip.setAttribute("data-open", "true");
+          tip.style.left = Math.min(trackX + 12, plot.clientWidth - 150) + "px";
+          tip.style.top = Math.max(y - 6, 0) + "px";
+        });
+        hit.addEventListener("pointerleave", function () {
+          tip.setAttribute("data-open", "false");
+        });
+        svg.appendChild(hit);
+      });
+
+      var old = plot.querySelector("svg");
+      if (old) plot.replaceChild(svg, old);
+      else plot.insertBefore(svg, tip);
+    }
+
+    draw();
+    var raf;
+    new ResizeObserver(function () {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(draw);
+    }).observe(plot);
+  }
+
+  function buildAudience() {
+    var months = DATA.demographics || [];
+    var section = document.getElementById("audience-section");
+    if (!months.length) {
+      if (section) section.hidden = true;
+      return;
+    }
+
+    var host = document.getElementById("audience-grid");
+    var picker = document.getElementById("audience-month");
+
+    function render(month) {
+      while (host.firstChild) host.removeChild(host.firstChild);
+      PLATFORMS.forEach(function (p) {
+        var d = month.platforms[p.key];
+        if (!d) return;
+
+        var card = document.createElement("section");
+        card.className = "card";
+
+        var eyebrow = document.createElement("p");
+        eyebrow.className = "card-eyebrow";
+        eyebrow.textContent = "Crooked Ideas Audience · " + month.label;
+        var h3 = document.createElement("h3");
+        h3.textContent = p.label;
+        var sub = document.createElement("p");
+        sub.className = "card-sub";
+        sub.textContent = d.window
+          ? "Share of " + d.basis + ", " + d.window + ", as " + p.label + " reports it"
+          : "Share of " + d.basis + " as " + p.label + " reports it — reporting window not shown in the export";
+        card.appendChild(eyebrow);
+        card.appendChild(h3);
+        card.appendChild(sub);
+
+        barBlock(card, "Gender", d.gender, p.color);
+        barBlock(card, "Age", d.age, p.color);
+
+        if (d.source_note) {
+          var foot = document.createElement("p");
+          foot.className = "card-foot";
+          foot.textContent = d.source_note;
+          card.appendChild(foot);
+        }
+        host.appendChild(card);
+      });
+    }
+
+    if (months.length > 1) {
+      months.slice().reverse().forEach(function (m) {
+        var opt = document.createElement("option");
+        opt.value = m.month;
+        opt.textContent = m.label;
+        picker.appendChild(opt);
+      });
+      picker.addEventListener("change", function () {
+        render(months.filter(function (m) { return m.month === picker.value; })[0]);
+      });
+      picker.hidden = false;
+    } else {
+      document.getElementById("audience-month-label").textContent = months[0].label;
+    }
+
+    render(months[months.length - 1]);
+  }
+
   /* ---------------- table + export ---------------- */
 
   var COLUMNS = [
@@ -1047,6 +1229,7 @@
 
   buildTiles();
   buildCharts();
+  buildAudience();
   buildTable();
   wireControls();
   stampMeta();

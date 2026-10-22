@@ -1,0 +1,146 @@
+{
+  "_comment": "Audience demographics, supplied by hand each month from each platform's own analytics. Kept apart from the weekly dataset because the cadence and the basis differ: these are shares of an audience over a month-ish window, not counts for a week. The three platforms are NOT directly comparable — each reports a share of something different (YouTube views, TikTok viewers, Instagram followers) and each uses its own age bands, so every platform keeps the bands and category names it actually reports and the card says what the share is of. Gender rows are ordered consistently across platforms for scanning; the values are exactly as reported.",
+  "months": [
+    {
+      "month": "2026-10",
+      "label": "October 2026",
+      "platforms": {
+        "Instagram": {
+          "basis": "followers",
+          "window": "current snapshot",
+          "source_note": "Instagram Insights, Audience tab, captured 10/22/2026. The age bars there split each band by women and men; the share stored here is the band total, which is the figure Instagram labels.",
+          "gender": [
+            {
+              "label": "Women",
+              "value": 60.2
+            },
+            {
+              "label": "Men",
+              "value": 39.8
+            }
+          ],
+          "age": [
+            {
+              "label": "13–17",
+              "value": 0.2
+            },
+            {
+              "label": "18–24",
+              "value": 2.8
+            },
+            {
+              "label": "25–34",
+              "value": 19.6
+            },
+            {
+              "label": "35–44",
+              "value": 36.5
+            },
+            {
+              "label": "45–54",
+              "value": 20.8
+            },
+            {
+              "label": "55–64",
+              "value": 12.7
+            },
+            {
+              "label": "65+",
+              "value": 7.5
+            }
+          ]
+        },
+        "TikTok": {
+          "basis": "viewers",
+          "window": null,
+          "source_note": "TikTok Analytics, Viewers tab, Viewer insights, captured 10/22/2026. TikTok reports no 13–17 band and merges everything above 55 into one.",
+          "gender": [
+            {
+              "label": "Female",
+              "value": 30
+            },
+            {
+              "label": "Male",
+              "value": 70
+            },
+            {
+              "label": "Other",
+              "value": 0
+            }
+          ],
+          "age": [
+            {
+              "label": "18–24",
+              "value": 23.7
+            },
+            {
+              "label": "25–34",
+              "value": 51.7
+            },
+            {
+              "label": "35–44",
+              "value": 18.6
+            },
+            {
+              "label": "45–54",
+              "value": 4.1
+            },
+            {
+              "label": "55+",
+              "value": 1.9
+            }
+          ]
+        },
+        "YouTube": {
+          "basis": "views",
+          "window": "last 28 days",
+          "source_note": "YouTube Studio, Age and gender panel, captured 10/22/2026. This is a share of views rather than of people, so a heavy viewer counts more than once.",
+          "gender": [
+            {
+              "label": "Female",
+              "value": 15.1
+            },
+            {
+              "label": "Male",
+              "value": 84.9
+            },
+            {
+              "label": "User-specified",
+              "value": 0
+            }
+          ],
+          "age": [
+            {
+              "label": "13–17",
+              "value": 4.3
+            },
+            {
+              "label": "18–24",
+              "value": 7.7
+            },
+            {
+              "label": "25–34",
+              "value": 38.0
+            },
+            {
+              "label": "35–44",
+              "value": 27.9
+            },
+            {
+              "label": "45–54",
+              "value": 12.5
+            },
+            {
+              "label": "55–64",
+              "value": 6.5
+            },
+            {
+              "label": "65+",
+              "value": 3.1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -15,6 +15,7 @@ assets/data.js           generated — the dataset as window.CI_DATA
 assets/fonts/            Archivo (variable, latin subset), SIL OFL 1.1
 data/crooked-ideas.json  generated — the canonical dataset
 data/manual-weeks.json   weeks entered by hand rather than parsed (see below)
+data/demographics.json   monthly audience age and gender, entered by hand (see below)
 scripts/parse_emails.py  reads .eml files and writes both generated files
 scripts/ingest_email.py  keeps one email's Crooked Ideas section in data/emails/
 scripts/gmail-forwarder.gs  Apps Script that forwards the weekly email to GitHub
@@ -128,6 +129,30 @@ and a washed-back fill, labelled in the table and tooltip, and marked
 `"placeholder": false`; it then renders like any reported week, and a
 `"source_note"` explaining where it came from shows on hover in the table and
 lands in the JSON. The weeks of 6/15-6/21 and 6/22-6/28 are transcribed this way.
+
+## Adding a month of demographics
+
+Audience age and gender come from each platform's own analytics and are entered
+by hand in `data/demographics.json`, newest month appended to `months`:
+
+```json
+{ "month": "2026-11", "label": "November 2026",
+  "platforms": { "YouTube": { "basis": "views", "window": "last 28 days",
+    "source_note": "where this came from",
+    "gender": [{ "label": "Female", "value": 15.1 }],
+    "age":    [{ "label": "13–17",  "value": 4.3 }] } } }
+```
+
+Run `python3 scripts/parse_emails.py` afterwards — it folds the file into the
+generated data like everything else. With more than one month stored, a picker
+appears in the Audience section header.
+
+Keep each platform's own age bands and category names rather than forcing them
+into a shared shape: TikTok reports no 13–17 band and merges everything above
+55, and the three disagree on what a gender category is called. `basis` and
+`window` are printed on the card, so say what the share is actually of — these
+are **not** comparable across platforms (YouTube counts views, TikTok viewers,
+Instagram followers). Set `window` to `null` if the export doesn't show one.
 
 ## How the numbers are derived
 

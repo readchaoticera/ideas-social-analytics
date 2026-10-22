@@ -291,6 +291,35 @@ h1 {
   font-stretch: 92%;
 }
 
+/* ---------- Demographic bars ---------- */
+
+.bars { margin-top: 18px; }
+
+.bars h4 {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 8px;
+}
+
+.bars .plot svg { overflow: visible; }
+
+.month-picker {
+  appearance: none;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  font-stretch: 92%;
+  color: var(--ink);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 /* ---------- Legend ---------- */
 
 .legend {

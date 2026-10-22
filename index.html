@@ -64,6 +64,16 @@
     <div class="grid" id="platform-grid"></div>
   </section>
 
+  <section aria-labelledby="audience-heading" id="audience-section">
+    <div class="section-head">
+      <h2 id="audience-heading">Audience</h2>
+      <p>Who is on the other end, from each platform's own analytics. Updated monthly, not weekly — and each platform measures a different thing, so read the cards one at a time rather than against each other.</p>
+      <span class="control-label" id="audience-month-label"></span>
+      <select id="audience-month" class="month-picker" aria-label="Month" hidden></select>
+    </div>
+    <div class="grid" id="audience-grid"></div>
+  </section>
+
   <section aria-labelledby="table-heading">
     <div class="section-head">
       <h2 id="table-heading">The numbers</h2>
@@ -81,6 +91,7 @@
       <li><strong>Hand-entered weeks.</strong> A week with no <code>.eml</code> on hand lives in <code>data/manual-weeks.json</code>, and a parsed email for the same week always replaces it. Two kinds: a week <em>transcribed</em> from a real email, or taken from the analytics tool’s own export, counts as reported and is drawn like any other — <span id="transcribed-weeks">these are listed in the data</span>, and hovering such a row in the table says where it came from. A <em>placeholder</em>, for a week whose email hasn't arrived, is drawn with a dashed line and hollow markers, labelled in the table and marked <code>placeholder</code> in the CSV. Either way, a metric that wasn't supplied stays blank rather than being guessed at.</li>
       <li><strong>Threads and YouTube.</strong> The weekly emails report followers for both and nothing else, which is why they appear in the follower charts alone. The 9/28–10/4 figures come from the analytics tool directly, and that source does report engagements for them — Threads −43, net of removals, and YouTube 161 — so both sit inside that week’s engagement total even though neither has a line on the platform engagement chart. Neither reports impressions anywhere. YouTube first appears in the 9/14–9/20 email, at 46 followers; earlier weeks have no row for it, which is why its line starts there. On a linear axis it sits on the baseline next to Instagram; switch the platform scale to log to see it.</li>
       <li><strong>Week-over-week changes are computed</strong> from the totals plotted here, not copied from the WoW figures the email prints beside each number — those occasionally disagree with the email's own totals. For 9/14–9/20, for instance, the email reports engagements down 24% while its printed totals (58,687 against 69,191) work out to −15.2%.</li>
+      <li><strong>Audience demographics</strong> come from each platform's own analytics, entered by hand each month into <code>data/demographics.json</code>, and are shares rather than counts. The three are not comparable with each other: YouTube reports a share of <em>views</em> over the last 28 days, so a heavy viewer counts more than once; TikTok a share of <em>viewers</em>; Instagram a share of <em>followers</em>. The age bands differ too — TikTok reports no 13–17 band and merges everything above 55. Each card says what its share is of, and every platform keeps the bands and category names it actually reports.</li>
       <li><strong>Engagement rate</strong> is the rate printed in the email, not a recomputed ratio — except on placeholder weeks, where no email printed one and it is computed as engagements ÷ impressions.</li>
       <li>Raw data: <a href="data/crooked-ideas.json">crooked-ideas.json</a>. Rebuild with <code>python3 scripts/parse_emails.py &lt;dir-of-emails&gt;</code>.</li>
     </ul>
