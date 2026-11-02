@@ -14,11 +14,11 @@ const CONFIG = {
   repo: 'ideas-social-analytics',
   eventType: 'weekly-analytics',
 
-  // Gmail search for the weekly email. The subject keeps drifting — "Weekly
-  // Social Analytics", "Social Weekly Analytics", "Weekly Social Report", and
-  // on 10/19-10/25 simply "Weekly Analytics" — so match the one word that has
-  // survived every version and let requiredText below reject anything else.
-  query: 'subject:(analytics OR report) newer_than:14d',
+  // Gmail search for the weekly email. The subject keeps drifting — Analytics,
+  // Report, Recap; Social present or not — and the only word every version has
+  // carried is "Weekly". Match on that alone and let requiredText below reject
+  // anything that is not this report.
+  query: 'subject:weekly newer_than:14d',
 
   // Applied once an email has been sent, so re-runs skip it.
   processedLabel: 'Ideas dashboard synced',

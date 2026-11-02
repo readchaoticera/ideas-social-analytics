@@ -2,7 +2,7 @@
 window.CI_DATA = {
   "brand": "Crooked Ideas",
   "source": "Crooked Media Weekly Social Analytics emails",
-  "generated_from": 16,
+  "generated_from": 17,
   "manual_weeks": 5,
   "placeholder_weeks": 0,
   "weeks": [
@@ -1223,6 +1223,64 @@ window.CI_DATA = {
           "platform_sum": 29858,
           "reported": 29847,
           "diff_pct": 0.0
+        }
+      },
+      "platform_rows_suspect": false,
+      "placeholder": false
+    },
+    {
+      "week_start": "2026-10-26",
+      "week_end": "2026-11-01",
+      "label": "10/26-11/1",
+      "posts": 54,
+      "totals": {
+        "followers": 33274,
+        "impressions": 780560,
+        "engagements": 29645,
+        "engagement_rate": 3.8
+      },
+      "platforms": {
+        "Instagram": {
+          "followers": 18333,
+          "impressions": 616390,
+          "engagements": 20297,
+          "engagement_rate": 3.3
+        },
+        "Threads": {
+          "followers": 2395,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        },
+        "TikTok": {
+          "followers": 12139,
+          "impressions": 164170,
+          "engagements": 9312,
+          "engagement_rate": 5.7
+        },
+        "YouTube": {
+          "followers": 407,
+          "impressions": null,
+          "engagements": null,
+          "engagement_rate": null
+        }
+      },
+      "source_email": "2026-11-01.eml",
+      "checks": {
+        "followers": {
+          "platform_sum": 33274,
+          "reported": 33274,
+          "diff_pct": 0.0
+        },
+        "impressions": {
+          "platform_sum": 780560,
+          "reported": 780560,
+          "diff_pct": 0.0
+        },
+        "engagements": {
+          "platform_sum": 29609,
+          "reported": 29645,
+          "diff_pct": -0.1
         }
       },
       "platform_rows_suspect": false,

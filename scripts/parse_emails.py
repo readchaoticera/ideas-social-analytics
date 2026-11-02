@@ -99,9 +99,11 @@ def week_dates(subject, year=2026):
     if not m:
         raise ValueError("no week range (like 9/21-9/27) in subject: %r" % subject)
     sm, sd, em, ed = (int(x) for x in m.groups())
+    # A week that straddles New Year ends in the next year: 12/28-1/3.
+    end_year = year + 1 if em < sm else year
     return (
         "%d-%02d-%02d" % (year, sm, sd),
-        "%d-%02d-%02d" % (year, em, ed),
+        "%d-%02d-%02d" % (end_year, em, ed),
         "%d/%d-%d/%d" % (sm, sd, em, ed),
     )
 
