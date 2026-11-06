@@ -3,8 +3,8 @@ window.CI_DATA = {
   "brand": "Crooked Ideas",
   "source": "Crooked Media Weekly Social Analytics emails",
   "generated_from": 17,
-  "manual_weeks": 5,
-  "placeholder_weeks": 0,
+  "manual_weeks": 6,
+  "placeholder_weeks": 1,
   "weeks": [
     {
       "week_start": "2026-06-01",
@@ -1285,6 +1285,69 @@ window.CI_DATA = {
       },
       "platform_rows_suspect": false,
       "placeholder": false
+    },
+    {
+      "week_start": "2026-11-02",
+      "week_end": "2026-11-08",
+      "label": "11/2-11/8",
+      "placeholder": true,
+      "coverage_note": "Covers Nov 2\u20135 only, four days of the seven, so week-over-week changes here compare a partial week against a full one.",
+      "source_note": "Partial week from the analytics tool's export, reporting period Nov 2\u20135 2026, captured 11/6. Every row reconciles with the reporting-period totals. To be replaced by the week's email.",
+      "posts": 27,
+      "totals": {
+        "followers": 35954,
+        "impressions": 1298605,
+        "engagements": 90190,
+        "engagement_rate": 6.9
+      },
+      "platforms": {
+        "Instagram": {
+          "followers": 19502,
+          "impressions": 1280421,
+          "engagements": 87884,
+          "engagement_rate": 6.9,
+          "posts": 11
+        },
+        "Threads": {
+          "followers": 2407,
+          "impressions": null,
+          "engagements": -116,
+          "engagement_rate": null,
+          "posts": 9
+        },
+        "TikTok": {
+          "followers": 12235,
+          "impressions": 18184,
+          "engagements": 2326,
+          "engagement_rate": 12.8,
+          "posts": 7
+        },
+        "YouTube": {
+          "followers": 1810,
+          "impressions": null,
+          "engagements": 96,
+          "engagement_rate": null,
+          "posts": 0
+        }
+      },
+      "checks": {
+        "followers": {
+          "platform_sum": 35954,
+          "reported": 35954,
+          "diff_pct": 0.0
+        },
+        "impressions": {
+          "platform_sum": 1298605,
+          "reported": 1298605,
+          "diff_pct": 0.0
+        },
+        "engagements": {
+          "platform_sum": 90190,
+          "reported": 90190,
+          "diff_pct": 0.0
+        }
+      },
+      "platform_rows_suspect": false
     }
   ],
   "demographics": [

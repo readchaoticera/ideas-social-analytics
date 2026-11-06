@@ -565,7 +565,10 @@
     if (cfg.provisional && cfg.provisional[i]) {
       var prov = document.createElement("div");
       prov.className = "tip-note";
-      prov.textContent = "Placeholder — no weekly email for this week yet.";
+      var week = WEEKS[WEEKS.length - slice().length + i];
+      prov.textContent = week && week.coverage_note
+        ? "Placeholder — " + week.coverage_note
+        : "Placeholder — no weekly email for this week yet.";
       tip.appendChild(prov);
     }
 
@@ -1222,8 +1225,9 @@
 
     document.getElementById("latest-badge").hidden = !last.placeholder;
     if (last.placeholder) {
-      document.getElementById("latest-note").textContent =
-        "These are placeholder figures — no weekly email for this week yet. Metrics that weren't supplied show as \u2014.";
+      document.getElementById("latest-note").textContent = last.coverage_note
+        ? "Placeholder figures — no weekly email for this week yet. " + last.coverage_note
+        : "These are placeholder figures — no weekly email for this week yet. Metrics that weren't supplied show as \u2014.";
     }
   }
 
