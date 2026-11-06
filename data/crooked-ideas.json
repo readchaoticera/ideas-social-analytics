@@ -1291,8 +1291,8 @@
       "label": "11/2-11/8",
       "placeholder": true,
       "coverage_note": "Covers Nov 2\u20135 only, four days of the seven, so week-over-week changes here compare a partial week against a full one.",
-      "source_note": "Partial week from the analytics tool's export, reporting period Nov 2\u20135 2026, captured 11/6. Every row reconciles with the reporting-period totals. To be replaced by the week's email.",
-      "posts": 27,
+      "source_note": "Partial week from the analytics tool's export, reporting period Nov 2\u20135 2026, captured 11/6. Every row reconciles with the reporting-period totals. To be replaced by the week's email. Post volume set to 54 by hand; the export's per-platform counts, kept as reported, sum to 27 and no longer match that total.",
+      "posts": 54,
       "totals": {
         "followers": 35954,
         "impressions": 1298605,
