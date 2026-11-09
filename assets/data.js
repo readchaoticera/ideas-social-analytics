@@ -4,7 +4,7 @@ window.CI_DATA = {
   "source": "Crooked Media Weekly Social Analytics emails",
   "generated_from": 17,
   "manual_weeks": 6,
-  "placeholder_weeks": 1,
+  "placeholder_weeks": 0,
   "weeks": [
     {
       "week_start": "2026-06-01",
@@ -1290,60 +1290,59 @@ window.CI_DATA = {
       "week_start": "2026-11-02",
       "week_end": "2026-11-08",
       "label": "11/2-11/8",
-      "placeholder": true,
-      "coverage_note": "Covers Nov 2\u20135 only, four days of the seven, so week-over-week changes here compare a partial week against a full one.",
-      "source_note": "Partial week from the analytics tool's export, reporting period Nov 2\u20135 2026, captured 11/6. Every row reconciles with the reporting-period totals. To be replaced by the week's email. Post volume set to 54 by hand; the export's per-platform counts, kept as reported, sum to 27 and no longer match that total.",
-      "posts": 54,
+      "placeholder": false,
+      "source_note": "Sprout Social export for the full week Nov 2-8 2026, captured 11/9, replacing the Nov 2-5 partial. Every row reconciles with the reporting-period totals. Sprout reports 40 posts, superseding the 54 entered by hand against the partial. Note Sprout and the weekly email disagree for the week before this one: Sprout shows 866,735 impressions and 32,387 engagements for 10/26-11/1 where the email reported 780,560 and 29,645.",
+      "posts": 40,
       "totals": {
-        "followers": 35954,
-        "impressions": 1298605,
-        "engagements": 90190,
-        "engagement_rate": 6.9
+        "followers": 37588,
+        "impressions": 1956273,
+        "engagements": 132647,
+        "engagement_rate": 6.8
       },
       "platforms": {
         "Instagram": {
-          "followers": 19502,
-          "impressions": 1280421,
-          "engagements": 87884,
-          "engagement_rate": 6.9,
-          "posts": 11
+          "followers": 19985,
+          "impressions": 1903872,
+          "engagements": 127518,
+          "engagement_rate": 6.7,
+          "posts": 16
         },
         "Threads": {
-          "followers": 2407,
+          "followers": 2412,
           "impressions": null,
-          "engagements": -116,
+          "engagements": -110,
           "engagement_rate": null,
-          "posts": 9
+          "posts": 13
         },
         "TikTok": {
-          "followers": 12235,
-          "impressions": 18184,
-          "engagements": 2326,
-          "engagement_rate": 12.8,
-          "posts": 7
+          "followers": 12261,
+          "impressions": 52401,
+          "engagements": 5060,
+          "engagement_rate": 9.7,
+          "posts": 11
         },
         "YouTube": {
-          "followers": 1810,
+          "followers": 2930,
           "impressions": null,
-          "engagements": 96,
+          "engagements": 179,
           "engagement_rate": null,
           "posts": 0
         }
       },
       "checks": {
         "followers": {
-          "platform_sum": 35954,
-          "reported": 35954,
+          "platform_sum": 37588,
+          "reported": 37588,
           "diff_pct": 0.0
         },
         "impressions": {
-          "platform_sum": 1298605,
-          "reported": 1298605,
+          "platform_sum": 1956273,
+          "reported": 1956273,
           "diff_pct": 0.0
         },
         "engagements": {
-          "platform_sum": 90190,
-          "reported": 90190,
+          "platform_sum": 132647,
+          "reported": 132647,
           "diff_pct": 0.0
         }
       },
